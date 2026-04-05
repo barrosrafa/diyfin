@@ -3,14 +3,15 @@
 import React, { useRef } from 'react'
 import { useVirtualizer } from '@tanstack/react-virtual'
 import { MonthlyRow } from '@/lib/calculators/compound-interest'
+import { Table } from 'lucide-react'
 
 interface MonthlyTableProps {
   schedule: MonthlyRow[]
 }
 
 /**
- * Tabela virtualizada para exibir a evolução mês a mês.
- * Suporta até 600 linhas com alta performance.
+ * Tabela virtualizada para exibir a evolução mês a mês com design Pro Max.
+ * Suporta até 600 linhas com alta performance e responsividade.
  */
 export function MonthlyTable({ schedule }: MonthlyTableProps) {
   const parentRef = useRef<HTMLDivElement>(null)
@@ -30,14 +31,22 @@ export function MonthlyTable({ schedule }: MonthlyTableProps) {
   }
 
   return (
-    <div className="w-full bg-white rounded-xl border border-gray-200 shadow-sm overflow-hidden">
-      <div className="p-4 border-b border-gray-100 flex justify-between items-center">
-        <h3 className="text-sm font-semibold text-gray-700">Tabela de Evolução Mensal</h3>
+    <div className="w-full bg-white rounded-lg border border-slate-200 shadow-sm hover:shadow-md transition-shadow duration-200 overflow-hidden">
+      {/* Header da Tabela */}
+      <div className="px-6 py-4 border-b border-slate-100 bg-gradient-to-r from-slate-50 to-white flex items-center gap-3">
+        <div className="p-2 bg-sky-100 rounded-lg">
+          <Table className="w-4 h-4 text-sky-600" />
+        </div>
+        <div>
+          <h3 className="text-sm font-semibold text-slate-900">Tabela de Evolução Mensal</h3>
+          <p className="text-xs text-slate-500 mt-0.5">Detalhamento mês a mês do crescimento</p>
+        </div>
       </div>
       
+      {/* Container com Scroll Virtualizado */}
       <div
         ref={parentRef}
-        className="h-[400px] overflow-auto scrollbar-thin scrollbar-thumb-gray-200"
+        className="h-[400px] md:h-[500px] overflow-auto scrollbar-thin scrollbar-thumb-slate-300 scrollbar-track-slate-50"
       >
         <div
           style={{
@@ -47,23 +56,30 @@ export function MonthlyTable({ schedule }: MonthlyTableProps) {
           }}
         >
           <table className="w-full text-left border-collapse">
-            <thead className="sticky top-0 bg-gray-50 z-10 shadow-sm">
+            {/* Header Sticky */}
+            <thead className="sticky top-0 bg-gradient-to-r from-slate-50 to-slate-50/50 z-10 shadow-sm border-b border-slate-200">
               <tr>
-                <th className="px-4 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wider">Mês</th>
-                <th className="px-4 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wider">Saldo Inicial</th>
-                <th className="px-4 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wider">Aporte</th>
-                <th className="px-4 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wider">Juros</th>
-                <th className="px-4 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wider">Saldo Final</th>
+                <th className="px-4 md:px-6 py-3 text-xs font-semibold text-slate-700 uppercase tracking-wider">Mês</th>
+                <th className="px-4 md:px-6 py-3 text-xs font-semibold text-slate-700 uppercase tracking-wider hidden sm:table-cell">Saldo Inicial</th>
+                <th className="px-4 md:px-6 py-3 text-xs font-semibold text-slate-700 uppercase tracking-wider">Aporte</th>
+                <th className="px-4 md:px-6 py-3 text-xs font-semibold text-slate-700 uppercase tracking-wider hidden md:table-cell">Juros</th>
+                <th className="px-4 md:px-6 py-3 text-xs font-semibold text-slate-700 uppercase tracking-wider">Saldo Final</th>
               </tr>
             </thead>
+            
+            {/* Body com Linhas Virtualizadas */}
             <tbody>
               {rowVirtualizer.getVirtualItems().map((virtualRow) => {
                 const row = schedule[virtualRow.index]
+                const isEvenRow = virtualRow.index % 2 === 0
+                
                 return (
                   <tr
                     key={virtualRow.key}
-                    className={`border-b border-gray-50 hover:bg-blue-50/30 transition-colors ${
-                      virtualRow.index % 2 === 0 ? 'bg-white' : 'bg-gray-50/30'
+                    className={`border-b border-slate-100 transition-colors duration-150 ${
+                      isEvenRow 
+                        ? 'bg-white hover:bg-sky-50/50' 
+                        : 'bg-slate-50/30 hover:bg-sky-50/50'
                     }`}
                     style={{
                       position: 'absolute',
@@ -74,17 +90,46 @@ export function MonthlyTable({ schedule }: MonthlyTableProps) {
                       transform: `translateY(${virtualRow.start}px)`,
                     }}
                   >
-                    <td className="px-4 py-3 text-sm font-medium text-gray-900">{row.mes}</td>
-                    <td className="px-4 py-3 text-sm text-gray-600">{formatCurrency(row.saldoInicial)}</td>
-                    <td className="px-4 py-3 text-sm text-gray-600">{formatCurrency(row.aporte)}</td>
-                    <td className="px-4 py-3 text-sm text-emerald-600 font-medium">+{formatCurrency(row.jurosMes)}</td>
-                    <td className="px-4 py-3 text-sm font-semibold text-blue-900">{formatCurrency(row.saldoFinal)}</td>
+                    {/* Coluna: Mês */}
+                    <td className="px-4 md:px-6 py-3 text-sm font-semibold text-slate-900 whitespace-nowrap">
+                      {row.mes}
+                    </td>
+                    
+                    {/* Coluna: Saldo Inicial (Hidden em Mobile) */}
+                    <td className="px-4 md:px-6 py-3 text-sm text-slate-600 hidden sm:table-cell">
+                      {formatCurrency(row.saldoInicial)}
+                    </td>
+                    
+                    {/* Coluna: Aporte */}
+                    <td className="px-4 md:px-6 py-3 text-sm text-slate-600">
+                      {formatCurrency(row.aporte)}
+                    </td>
+                    
+                    {/* Coluna: Juros (Hidden em Mobile) */}
+                    <td className="px-4 md:px-6 py-3 text-sm font-medium text-emerald-600 hidden md:table-cell">
+                      <span className="inline-flex items-center gap-1">
+                        <span className="text-emerald-500">+</span>
+                        {formatCurrency(row.jurosMes)}
+                      </span>
+                    </td>
+                    
+                    {/* Coluna: Saldo Final */}
+                    <td className="px-4 md:px-6 py-3 text-sm font-bold text-sky-900 whitespace-nowrap">
+                      {formatCurrency(row.saldoFinal)}
+                    </td>
                   </tr>
                 )
               })}
             </tbody>
           </table>
         </div>
+      </div>
+
+      {/* Footer com Informação */}
+      <div className="px-6 py-3 bg-slate-50/50 border-t border-slate-100 rounded-b-lg">
+        <p className="text-xs text-slate-600">
+          <span className="font-medium text-slate-700">📋 Total de períodos:</span> {schedule.length} {schedule.length === 1 ? 'mês' : 'meses'}
+        </p>
       </div>
     </div>
   )

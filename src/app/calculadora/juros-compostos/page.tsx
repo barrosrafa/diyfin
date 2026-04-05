@@ -57,19 +57,53 @@ Onde:
 
 export default function JurosCompostosPage() {
   return (
-    <div className="container mx-auto px-4 py-12 max-w-6xl">
-      <div className="mb-8 max-w-4xl mx-auto">
-        <h1 className="text-3xl font-bold text-slate-900 mb-2">Calculadora de Juros Compostos</h1>
-        <p className="text-slate-600">Simulador de evolução patrimonial com aportes mensais e reinvestimento de lucros.</p>
+    <main className="w-full bg-gradient-to-b from-slate-50 to-white">
+      {/* Hero Section */}
+      <div className="container mx-auto px-4 py-8 md:py-12 lg:py-16 max-w-7xl">
+        <div className="mb-8 md:mb-12 max-w-4xl mx-auto text-center">
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-sky-100 text-sky-700 text-xs font-semibold mb-4">
+            <span>✨</span> Ferramenta Gratuita
+          </div>
+          <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold text-slate-900 mb-4 leading-tight">
+            Calculadora de <span className="bg-gradient-to-r from-sky-600 to-blue-600 bg-clip-text text-transparent">Juros Compostos</span>
+          </h1>
+          <p className="text-lg md:text-xl text-slate-600 leading-relaxed">
+            Simule o crescimento do seu patrimônio com aportes mensais e reinvestimento de lucros. Descubra o poder dos juros compostos no seu futuro financeiro.
+          </p>
+        </div>
       </div>
-      
-      <Suspense fallback={<div className="h-[600px] flex items-center justify-center">Carregando calculadora...</div>}>
-        <CompoundInterestCalculator />
-      </Suspense>
-      
-      <div className="max-w-4xl mx-auto mt-12">
+
+      {/* Calculadora Principal */}
+      <div className="container mx-auto px-4 py-8 md:py-12 max-w-7xl">
+        <Suspense fallback={
+          <div className="h-[600px] flex flex-col items-center justify-center gap-4">
+            <div className="w-12 h-12 rounded-full border-4 border-slate-200 border-t-sky-500 animate-spin"></div>
+            <p className="text-slate-600 font-medium">Carregando calculadora...</p>
+          </div>
+        }>
+          <CompoundInterestCalculator />
+        </Suspense>
+      </div>
+
+      {/* Conteúdo Técnico */}
+      <div className="container mx-auto px-4 py-12 md:py-16 lg:py-20 max-w-4xl">
         <CalculatorContent content={technicalContent} />
       </div>
-    </div>
+
+      {/* CTA Final */}
+      <div className="bg-gradient-to-r from-sky-600 to-blue-600 py-12 md:py-16 mt-12 md:mt-16">
+        <div className="container mx-auto px-4 max-w-4xl text-center">
+          <h2 className="text-2xl md:text-3xl font-bold text-white mb-4">
+            Pronto para começar a investir?
+          </h2>
+          <p className="text-sky-100 mb-8 text-lg">
+            Use nossa calculadora para planejar diferentes cenários e encontre a melhor estratégia para seu futuro financeiro.
+          </p>
+          <button className="px-8 py-3 bg-white text-sky-600 font-semibold rounded-lg hover:bg-sky-50 transition-colors duration-200 shadow-lg hover:shadow-xl">
+            Explorar Mais Calculadoras
+          </button>
+        </div>
+      </div>
+    </main>
   );
 }
