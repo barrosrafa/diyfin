@@ -1,6 +1,6 @@
 import type { Metadata } from 'next';
 import { Suspense } from 'react';
-import { JurosCompostosCalculadora } from '@/components/calculadoras/juros-compostos/JurosCompostosCalculadora';
+import CompoundInterestCalculator from '@/components/calculators/compound-interest';
 import { CalculatorContent } from '@/components/calculadoras/shared/CalculatorContent';
 
 export const metadata: Metadata = {
@@ -22,8 +22,8 @@ Nossa ferramenta permite simular cenários complexos com aportes mensais:
 
 1.  **Capital Inicial (R$):** O valor que você já tem guardado para começar.
 2.  **Aporte Mensal (R$):** Quanto você pretende poupar e investir todos os meses.
-3.  **Taxa de Juros (% ao mês):** A rentabilidade média esperada do seu investimento.
-4.  **Tempo (meses):** O horizonte de tempo que você pretende manter o dinheiro aplicado.
+3.  **Taxa de Juros (% ao mês ou ao ano):** A rentabilidade média esperada do seu investimento.
+4.  **Tempo (meses ou anos):** O horizonte de tempo que você pretende manter o dinheiro aplicado.
 
 O gráfico de **Evolução do Patrimônio** mostrará visualmente a diferença entre o que você tirou do bolso (Total Investido) e o crescimento gerado pelos juros (Valor Total).
 
@@ -57,15 +57,19 @@ Onde:
 
 export default function JurosCompostosPage() {
   return (
-    <div className="container mx-auto px-4 py-12 max-w-4xl">
-      <div className="mb-8">
+    <div className="container mx-auto px-4 py-12 max-w-6xl">
+      <div className="mb-8 max-w-4xl mx-auto">
         <h1 className="text-3xl font-bold text-slate-900 mb-2">Calculadora de Juros Compostos</h1>
         <p className="text-slate-600">Simulador de evolução patrimonial com aportes mensais e reinvestimento de lucros.</p>
       </div>
-      <Suspense fallback={<div>Carregando calculadora...</div>}>
-        <JurosCompostosCalculadora />
+      
+      <Suspense fallback={<div className="h-[600px] flex items-center justify-center">Carregando calculadora...</div>}>
+        <CompoundInterestCalculator />
       </Suspense>
-      <CalculatorContent content={technicalContent} />
+      
+      <div className="max-w-4xl mx-auto mt-12">
+        <CalculatorContent content={technicalContent} />
+      </div>
     </div>
   );
 }
