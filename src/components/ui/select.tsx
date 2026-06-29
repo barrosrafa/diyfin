@@ -25,7 +25,7 @@ const SelectContext = React.createContext<{
 })
 
 export const Select = React.forwardRef<HTMLSelectElement, SelectProps>(
-  ({ className, children, options, value: controlledValue, defaultValue, onChange, onValueChange, ...props }, ref) => {
+  ({ className, children, options, value: controlledValue, defaultValue, onChange, onValueChange, style, ...props }, ref) => {
     const [uncontrolledValue, setUncontrolledValue] = React.useState(defaultValue?.toString() || '')
     const [open, setOpen] = React.useState(false)
 
@@ -50,10 +50,18 @@ export const Select = React.forwardRef<HTMLSelectElement, SelectProps>(
               handleChange(e.target.value)
               onChange?.(e)
             }}
-            className={cn(
-              'flex h-10 w-full appearance-none rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 pr-8',
-              className
-            )}
+            className={cn('flex w-full appearance-none pr-8 disabled:cursor-not-allowed disabled:opacity-50', className)}
+            style={{
+              height: '42px',
+              padding: '0 14px',
+              background: '#ffffff',
+              border: '1px solid #d2d2d7',
+              borderRadius: '10px',
+              color: '#1d1d1f',
+              fontSize: '0.95rem',
+              cursor: 'pointer',
+              ...style,
+            }}
             {...props}
           >
             {options.map((opt) => (
@@ -62,7 +70,10 @@ export const Select = React.forwardRef<HTMLSelectElement, SelectProps>(
               </option>
             ))}
           </select>
-          <ChevronDown className="absolute right-3 top-3 h-4 w-4 opacity-50 pointer-events-none" />
+          <ChevronDown
+            className="absolute right-3 top-1/2 -translate-y-1/2 h-4 w-4 pointer-events-none"
+            style={{ color: '#6e6e73' }}
+          />
         </div>
       )
     }
@@ -76,27 +87,35 @@ export const Select = React.forwardRef<HTMLSelectElement, SelectProps>(
 )
 Select.displayName = 'Select'
 
-export function SelectTrigger({ className, children, ...props }: React.HTMLAttributes<HTMLButtonElement>) {
+export function SelectTrigger({ className, children, style, ...props }: React.HTMLAttributes<HTMLButtonElement>) {
   const { open, setOpen } = React.useContext(SelectContext)
   return (
     <button
       type="button"
-      className={cn(
-        'flex h-10 w-full items-center justify-between rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50',
-        className
-      )}
+      className={cn('flex w-full items-center justify-between disabled:cursor-not-allowed disabled:opacity-50', className)}
+      style={{
+        height: '42px',
+        padding: '0 14px',
+        background: '#ffffff',
+        border: '1px solid #d2d2d7',
+        borderRadius: '10px',
+        color: '#1d1d1f',
+        fontSize: '0.95rem',
+        cursor: 'pointer',
+        ...style,
+      }}
       onClick={() => setOpen(!open)}
       {...props}
     >
       {children}
-      <ChevronDown className="h-4 w-4 opacity-50 ml-2" />
+      <ChevronDown className="h-4 w-4 ml-2" style={{ color: '#6e6e73' }} />
     </button>
   )
 }
 
 export function SelectValue({ placeholder }: { placeholder?: string }) {
   const { value } = React.useContext(SelectContext)
-  return <span>{value || placeholder}</span>
+  return <span style={{ color: value ? '#1d1d1f' : '#86868b' }}>{value || placeholder}</span>
 }
 
 export function SelectContent({ className, children }: React.HTMLAttributes<HTMLDivElement>) {
@@ -104,28 +123,33 @@ export function SelectContent({ className, children }: React.HTMLAttributes<HTML
   if (!open) return null
   return (
     <div
-      className={cn(
-        'absolute top-full mt-1 z-50 min-w-[8rem] w-full overflow-hidden rounded-md border bg-popover text-popover-foreground shadow-md animate-in fade-in-80',
-        className
-      )}
+      className={cn('absolute top-full mt-1 z-50 min-w-[8rem] w-full overflow-hidden', className)}
+      style={{
+        background: '#ffffff',
+        border: '1px solid #d2d2d7',
+        borderRadius: '12px',
+        boxShadow: '0 8px 32px rgba(0,0,0,0.10)',
+      }}
     >
       <div className="p-1">{children}</div>
     </div>
   )
 }
 
-export function SelectItem({ value, className, children, ...props }: React.HTMLAttributes<HTMLDivElement> & { value: string }) {
+export function SelectItem({ value, className, children, style, ...props }: React.HTMLAttributes<HTMLDivElement> & { value: string }) {
   const { value: selectedValue, onChange, setOpen } = React.useContext(SelectContext)
   const isSelected = selectedValue === value
   return (
     <div
       role="option"
       aria-selected={isSelected}
-      className={cn(
-        'relative flex w-full cursor-default select-none items-center rounded-sm py-1.5 px-2 text-sm outline-none hover:bg-accent hover:text-accent-foreground cursor-pointer',
-        isSelected && 'bg-accent text-accent-foreground font-medium',
-        className
-      )}
+      className={cn('relative flex w-full cursor-pointer select-none items-center rounded-lg py-2 px-3 text-sm outline-none', className)}
+      style={{
+        color: isSelected ? '#0071e3' : '#1d1d1f',
+        background: isSelected ? 'rgba(0,113,227,0.08)' : 'transparent',
+        fontWeight: isSelected ? 600 : 400,
+        ...style,
+      }}
       onClick={() => {
         onChange(value)
         setOpen(false)

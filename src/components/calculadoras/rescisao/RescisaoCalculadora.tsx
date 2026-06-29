@@ -54,7 +54,7 @@ export function RescisaoCalculadora() {
       </Card>
 
       <div className="space-y-6">
-        <Card className="border-sky-100 bg-sky-50/30">
+        <Card className="border-[rgba(0,113,227,0.10)] bg-[rgba(0,113,227,0.06)]/30">
           <CardHeader>
             <CardTitle className="text-lg">Descontos e Líquido 2026</CardTitle>
           </CardHeader>

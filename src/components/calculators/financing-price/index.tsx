@@ -2,7 +2,7 @@
 
 import React, { useState, useMemo } from 'react'
 import { calcularPRICE, obterParcelasResumidas } from '@/lib/finance/price-engine'
-import { formatarMoeda, formatarPercentual } from '@/lib/finance/utils'
+import { formatarMoeda } from '@/lib/finance/utils'
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
@@ -15,7 +15,7 @@ export default function FinancingPriceCalculator() {
 
   const result = useMemo(() => {
     const prazoMeses = (Number(prazoAnos) || 0) * 12
-    const taxaMensalDecimal = (Math.pow(1 + (Number(taxaAnual) || 0) / 100, 1 / 12) - 1)
+    const taxaMensalDecimal = Math.pow(1 + (Number(taxaAnual) || 0) / 100, 1 / 12) - 1
     return calcularPRICE({
       principal: Number(principal) || 0,
       taxaMensal: taxaMensalDecimal,
@@ -34,19 +34,22 @@ export default function FinancingPriceCalculator() {
   ]
 
   return (
-    <div className="w-full max-w-7xl mx-auto space-y-8 p-4 md:p-6 lg:p-8">
+    <div className="w-full mx-auto space-y-8 p-4 md:p-6 lg:p-8" style={{ maxWidth: '980px' }}>
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 md:gap-8">
+        {/* Formulário */}
         <div className="lg:col-span-5 space-y-6">
-          <div className="space-y-2 px-1">
-            <h2 className="text-2xl md:text-3xl font-bold text-slate-900">Financiamento Imobiliário (PRICE)</h2>
-            <p className="text-sm md:text-base text-slate-600">
+          <div className="space-y-2">
+            <h2 className="text-2xl md:text-3xl font-semibold" style={{ color: '#1d1d1f', letterSpacing: '-0.02em' }}>
+              Financiamento Imobiliário (PRICE)
+            </h2>
+            <p className="text-sm md:text-base" style={{ color: '#6e6e73' }}>
               Simule financiamento com parcelas fixas no Sistema Francês de Amortização (PRICE).
             </p>
           </div>
 
           <Card>
             <CardHeader>
-              <CardTitle className="text-lg">Dados do Financiamento</CardTitle>
+              <CardTitle>Dados do Financiamento</CardTitle>
             </CardHeader>
             <CardContent className="space-y-4">
               <div>
@@ -78,31 +81,52 @@ export default function FinancingPriceCalculator() {
           </Card>
         </div>
 
+        {/* Resultados */}
         <div className="lg:col-span-7 space-y-6">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4" role="status" aria-live="polite">
-            <Card className="bg-sky-50 border-sky-200">
-              <CardContent className="p-4">
-                <p className="text-xs text-sky-700 font-semibold uppercase tracking-wider">Prestação Fixa</p>
-                <p className="text-2xl font-bold text-sky-900 mt-1">{formatarMoeda(result.prestacaoConstante || 0)}</p>
-              </CardContent>
-            </Card>
-            <Card className="bg-amber-50 border-amber-200">
-              <CardContent className="p-4">
-                <p className="text-xs text-amber-700 font-semibold uppercase tracking-wider">Total em Juros</p>
-                <p className="text-2xl font-bold text-amber-900 mt-1">{formatarMoeda(result.totalJuros)}</p>
-              </CardContent>
-            </Card>
-            <Card className="bg-slate-900 text-white border-slate-800">
-              <CardContent className="p-4">
-                <p className="text-xs text-slate-400 font-semibold uppercase tracking-wider">Custo Total Pago</p>
-                <p className="text-2xl font-bold text-sky-400 mt-1">{formatarMoeda(result.totalAmortizacao + result.totalJuros)}</p>
-              </CardContent>
-            </Card>
+            {/* Prestação Fixa */}
+            <div
+              className="rounded-2xl p-4"
+              style={{ background: 'rgba(0,113,227,0.06)', border: '1px solid rgba(0,113,227,0.18)' }}
+            >
+              <p className="text-xs font-semibold uppercase tracking-wider" style={{ color: '#0071e3' }}>
+                Prestação Fixa
+              </p>
+              <p className="text-2xl font-semibold mt-1" style={{ color: '#1d1d1f', letterSpacing: '-0.02em' }}>
+                {formatarMoeda(result.prestacaoConstante || 0)}
+              </p>
+            </div>
+
+            {/* Total em Juros */}
+            <div
+              className="rounded-2xl p-4"
+              style={{ background: 'rgba(255,214,10,0.08)', border: '1px solid rgba(255,214,10,0.30)' }}
+            >
+              <p className="text-xs font-semibold uppercase tracking-wider" style={{ color: '#b8860b' }}>
+                Total em Juros
+              </p>
+              <p className="text-2xl font-semibold mt-1" style={{ color: '#1d1d1f', letterSpacing: '-0.02em' }}>
+                {formatarMoeda(result.totalJuros)}
+              </p>
+            </div>
+
+            {/* Custo Total */}
+            <div
+              className="rounded-2xl p-4"
+              style={{ background: '#1d1d1f' }}
+            >
+              <p className="text-xs font-semibold uppercase tracking-wider" style={{ color: '#86868b' }}>
+                Custo Total Pago
+              </p>
+              <p className="text-2xl font-semibold mt-1" style={{ color: '#0071e3', letterSpacing: '-0.02em' }}>
+                {formatarMoeda(result.totalAmortizacao + result.totalJuros)}
+              </p>
+            </div>
           </div>
 
           <Card>
             <CardHeader>
-              <CardTitle className="text-lg">Tabela de Parcelas (Resumo)</CardTitle>
+              <CardTitle>Tabela de Parcelas (Resumo)</CardTitle>
             </CardHeader>
             <CardContent>
               <Table columns={tableColumns} data={resumidas} />

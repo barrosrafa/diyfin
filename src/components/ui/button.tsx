@@ -8,31 +8,63 @@ export interface ButtonProps
 }
 
 const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
-  ({ className, variant = 'default', size = 'default', ...props }, ref) => {
-    const variants = {
-      default: "bg-primary text-primary-foreground hover:bg-primary/90",
-      destructive: "bg-destructive text-destructive-foreground hover:bg-destructive/90",
-      outline: "border border-input bg-background hover:bg-accent hover:text-accent-foreground",
-      secondary: "bg-secondary text-secondary-foreground hover:bg-secondary/80",
-      ghost: "hover:bg-accent hover:text-accent-foreground",
-      link: "text-primary underline-offset-4 hover:underline",
+  ({ className, variant = 'default', size = 'default', style, ...props }, ref) => {
+    const variantStyles: Record<string, React.CSSProperties> = {
+      default: {
+        background: '#0071e3',
+        color: '#ffffff',
+        border: 'none',
+      },
+      destructive: {
+        background: '#ff3b30',
+        color: '#ffffff',
+        border: 'none',
+      },
+      outline: {
+        background: 'transparent',
+        color: '#0071e3',
+        border: '1px solid #0071e3',
+      },
+      secondary: {
+        background: '#f5f5f7',
+        color: '#1d1d1f',
+        border: '1px solid #d2d2d7',
+      },
+      ghost: {
+        background: 'transparent',
+        color: '#1d1d1f',
+        border: 'none',
+      },
+      link: {
+        background: 'transparent',
+        color: '#0071e3',
+        border: 'none',
+        textDecoration: 'underline',
+        textUnderlineOffset: '4px',
+      },
     }
-    
-    const sizes = {
-      default: "h-10 px-4 py-2",
-      sm: "h-9 rounded-md px-3",
-      lg: "h-11 rounded-md px-8",
-      icon: "h-10 w-10",
+
+    const sizeStyles: Record<string, React.CSSProperties> = {
+      default: { height: '40px', padding: '0 20px', fontSize: '0.9rem' },
+      sm:      { height: '34px', padding: '0 14px', fontSize: '0.8rem' },
+      lg:      { height: '48px', padding: '0 28px', fontSize: '1rem' },
+      icon:    { height: '40px', width: '40px', padding: '0' },
     }
 
     return (
       <button
         className={cn(
-          "inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50",
-          variants[variant],
-          sizes[size],
+          "inline-flex items-center justify-center whitespace-nowrap font-medium transition-all focus-visible:outline-none disabled:pointer-events-none disabled:opacity-50",
           className
         )}
+        style={{
+          borderRadius: '9999px',
+          cursor: 'pointer',
+          letterSpacing: '-0.01em',
+          ...variantStyles[variant],
+          ...sizeStyles[size],
+          ...style,
+        }}
         ref={ref}
         {...props}
       />

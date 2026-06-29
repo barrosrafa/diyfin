@@ -12,7 +12,7 @@ export const metadata: Metadata = {
 
 export default function SimpleInterestPage() {
   return (
-    <main className="w-full bg-gradient-to-b from-slate-50 to-white py-8">
+    <main className="w-full py-8" style={{ background: '#ffffff' }}>
       <SimpleInterestCalculator />
     </main>
   );

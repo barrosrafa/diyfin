@@ -39,9 +39,10 @@ export function TooltipContent({
   return (
     <div
       className={cn(
-        'absolute bottom-full left-1/2 -translate-x-1/2 mb-2 z-50 overflow-hidden rounded-md bg-primary px-3 py-1.5 text-xs text-primary-foreground shadow-md animate-in fade-in-0 zoom-in-95 pointer-events-none whitespace-nowrap',
+        'absolute bottom-full left-1/2 -translate-x-1/2 mb-2 z-50 overflow-hidden rounded-lg px-3 py-1.5 text-xs shadow-md pointer-events-none whitespace-nowrap',
         className
       )}
+      style={{ background: '#1d1d1f', color: '#ffffff', ...(props as any).style }}
       {...props}
     >
       {children}

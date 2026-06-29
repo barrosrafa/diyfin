@@ -2,7 +2,7 @@
 
 import React, { useState, useMemo } from 'react'
 import { calculateFIITetoPrice } from '@/lib/finance/fii-teto'
-import { formatarMoeda, formatarPercentual } from '@/lib/finance/utils'
+import { formatarMoeda } from '@/lib/finance/utils'
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
@@ -27,19 +27,22 @@ export default function FIITetoPriceCalculator() {
   }, [type, ntnbAverage, spread, monthlyIncome, currentPrice])
 
   return (
-    <div className="w-full max-w-7xl mx-auto space-y-8 p-4 md:p-6 lg:p-8">
+    <div className="w-full mx-auto space-y-8 p-4 md:p-6 lg:p-8" style={{ maxWidth: '980px' }}>
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 md:gap-8">
+        {/* Formulário */}
         <div className="lg:col-span-5 space-y-6">
-          <div className="space-y-2 px-1">
-            <h2 className="text-2xl md:text-3xl font-bold text-slate-900">Preço Teto de FIIs</h2>
-            <p className="text-sm md:text-base text-slate-600">
+          <div className="space-y-2">
+            <h2 className="text-2xl md:text-3xl font-semibold" style={{ color: '#1d1d1f', letterSpacing: '-0.02em' }}>
+              Preço Teto de FIIs
+            </h2>
+            <p className="text-sm md:text-base" style={{ color: '#6e6e73' }}>
               Calcule o preço máximo a pagar por uma cota de Fundo Imobiliário com base na NTN-B e spread desejado.
             </p>
           </div>
 
           <Card>
             <CardHeader>
-              <CardTitle className="text-lg">Parâmetros do Fundo</CardTitle>
+              <CardTitle>Parâmetros do Fundo</CardTitle>
             </CardHeader>
             <CardContent className="space-y-4">
               <div>
@@ -95,51 +98,72 @@ export default function FIITetoPriceCalculator() {
           </Card>
         </div>
 
+        {/* Resultados */}
         <div className="lg:col-span-7 space-y-6">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4" role="status" aria-live="polite">
-            <Card className="bg-sky-50 border-sky-200">
-              <CardContent className="p-6">
-                <p className="text-xs text-sky-700 font-semibold uppercase tracking-wider">Preço Teto Calculado</p>
-                <p className="text-3xl font-bold text-sky-900 mt-2">{formatarMoeda(result.tetoPrice)}</p>
-                <p className="text-xs text-sky-600 mt-2">Yield Alvo: {result.targetYield.toFixed(2)}% a.a.</p>
-              </CardContent>
-            </Card>
+            {/* Preço Teto */}
+            <div
+              className="rounded-2xl p-6"
+              style={{ background: 'rgba(0,113,227,0.06)', border: '1px solid rgba(0,113,227,0.18)' }}
+            >
+              <p className="text-xs font-semibold uppercase tracking-wider" style={{ color: '#0071e3' }}>
+                Preço Teto Calculado
+              </p>
+              <p className="text-3xl font-semibold mt-2" style={{ color: '#1d1d1f', letterSpacing: '-0.02em' }}>
+                {formatarMoeda(result.tetoPrice)}
+              </p>
+              <p className="text-xs mt-2" style={{ color: '#6e6e73' }}>
+                Yield Alvo: {result.targetYield.toFixed(2)}% a.a.
+              </p>
+            </div>
 
-            <Card className={result.isAboveTeto ? 'bg-red-50 border-red-200' : 'bg-emerald-50 border-emerald-200'}>
-              <CardContent className="p-6">
-                <div className="flex items-center justify-between">
-                  <p className="text-xs font-semibold uppercase tracking-wider text-slate-700">Status da Cotação</p>
-                  <Badge variant={result.isAboveTeto ? 'destructive' : 'default'}>
-                    {result.isAboveTeto ? 'Acima do Teto' : 'Com Margem de Segurança'}
-                  </Badge>
-                </div>
-                <p className={`text-3xl font-bold mt-2 ${result.isAboveTeto ? 'text-red-900' : 'text-emerald-900'}`}>
-                  {result.margin.toFixed(2)}%
+            {/* Status */}
+            <div
+              className="rounded-2xl p-6"
+              style={{
+                background: result.isAboveTeto ? 'rgba(255,59,48,0.06)' : 'rgba(48,209,88,0.06)',
+                border: result.isAboveTeto ? '1px solid rgba(255,59,48,0.20)' : '1px solid rgba(48,209,88,0.20)',
+              }}
+            >
+              <div className="flex items-center justify-between">
+                <p className="text-xs font-semibold uppercase tracking-wider" style={{ color: '#6e6e73' }}>
+                  Status da Cotação
                 </p>
-                <p className="text-xs text-slate-600 mt-2">
-                  {result.isAboveTeto ? 'Sem margem de segurança no preço atual.' : 'Desconto em relação ao preço teto.'}
-                </p>
-              </CardContent>
-            </Card>
+                <Badge variant={result.isAboveTeto ? 'destructive' : 'default'}>
+                  {result.isAboveTeto ? 'Acima do Teto' : 'Com Margem'}
+                </Badge>
+              </div>
+              <p
+                className="text-3xl font-semibold mt-2"
+                style={{ color: result.isAboveTeto ? '#ff3b30' : '#30d158', letterSpacing: '-0.02em' }}
+              >
+                {result.margin.toFixed(2)}%
+              </p>
+              <p className="text-xs mt-2" style={{ color: '#6e6e73' }}>
+                {result.isAboveTeto ? 'Sem margem de segurança no preço atual.' : 'Desconto em relação ao preço teto.'}
+              </p>
+            </div>
           </div>
 
           <Card>
             <CardHeader>
-              <CardTitle className="text-lg">Resumo de Indicadores</CardTitle>
+              <CardTitle>Resumo de Indicadores</CardTitle>
             </CardHeader>
             <CardContent className="space-y-3">
-              <div className="flex justify-between py-2 border-b text-sm">
-                <span className="text-slate-600">Yield Efetivo Atual:</span>
-                <span className="font-semibold text-slate-900">{result.currentYield.toFixed(2)}% a.a.</span>
-              </div>
-              <div className="flex justify-between py-2 border-b text-sm">
-                <span className="text-slate-600">Taxa NTN-B de Referência:</span>
-                <span className="font-semibold text-slate-900">{Number(ntnbAverage).toFixed(2)}% a.a.</span>
-              </div>
-              <div className="flex justify-between py-2 text-sm">
-                <span className="text-slate-600">Prêmio de Risco (Tipo):</span>
-                <span className="font-semibold text-slate-900">{type === 'papel' ? '+2.0% (Papel)' : '0.0% (Tijolo)'}</span>
-              </div>
+              {[
+                ['Yield Efetivo Atual:', `${result.currentYield.toFixed(2)}% a.a.`],
+                ['Taxa NTN-B de Referência:', `${Number(ntnbAverage).toFixed(2)}% a.a.`],
+                ['Prêmio de Risco (Tipo):', type === 'papel' ? '+2.0% (Papel)' : '0.0% (Tijolo)'],
+              ].map(([label, value], i, arr) => (
+                <div
+                  key={label}
+                  className="flex justify-between py-2 text-sm"
+                  style={i < arr.length - 1 ? { borderBottom: '1px solid #e5e5ea' } : {}}
+                >
+                  <span style={{ color: '#6e6e73' }}>{label}</span>
+                  <span className="font-semibold" style={{ color: '#1d1d1f' }}>{value}</span>
+                </div>
+              ))}
             </CardContent>
           </Card>
         </div>

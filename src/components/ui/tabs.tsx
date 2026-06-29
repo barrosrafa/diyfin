@@ -39,10 +39,15 @@ export function Tabs({ value: controlledValue, defaultValue = '', onValueChange,
   )
 }
 
-export function TabsList({ className, ...props }: React.HTMLAttributes<HTMLDivElement>) {
+export function TabsList({ className, style, ...props }: React.HTMLAttributes<HTMLDivElement>) {
   return (
     <div
-      className={cn('inline-flex h-10 items-center justify-center rounded-md bg-muted p-1 text-muted-foreground', className)}
+      className={cn('inline-flex h-10 items-center justify-center p-1', className)}
+      style={{
+        background: '#f5f5f7',
+        borderRadius: '10px',
+        ...style,
+      }}
       {...props}
     />
   )
@@ -52,7 +57,7 @@ export interface TabsTriggerProps extends React.ButtonHTMLAttributes<HTMLButtonE
   value: string
 }
 
-export function TabsTrigger({ value, className, children, ...props }: TabsTriggerProps) {
+export function TabsTrigger({ value, className, children, style, ...props }: TabsTriggerProps) {
   const { value: selectedValue, onValueChange } = React.useContext(TabsContext)
   const isSelected = selectedValue === value
   return (
@@ -61,10 +66,17 @@ export function TabsTrigger({ value, className, children, ...props }: TabsTrigge
       role="tab"
       aria-selected={isSelected}
       className={cn(
-        'inline-flex items-center justify-center whitespace-nowrap rounded-sm px-3 py-1.5 text-sm font-medium ring-offset-background transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 cursor-pointer',
-        isSelected ? 'bg-background text-foreground shadow-sm' : 'hover:text-foreground',
+        'inline-flex items-center justify-center whitespace-nowrap px-4 py-1.5 text-sm font-medium transition-all focus-visible:outline-none disabled:pointer-events-none disabled:opacity-50 cursor-pointer',
         className
       )}
+      style={{
+        borderRadius: '8px',
+        background: isSelected ? '#ffffff' : 'transparent',
+        color: isSelected ? '#1d1d1f' : '#6e6e73',
+        boxShadow: isSelected ? '0 1px 4px rgba(0,0,0,0.08)' : 'none',
+        fontWeight: isSelected ? 600 : 400,
+        ...style,
+      }}
       onClick={() => onValueChange(value)}
       {...props}
     >
@@ -83,7 +95,7 @@ export function TabsContent({ value, className, children, ...props }: TabsConten
   return (
     <div
       role="tabpanel"
-      className={cn('mt-2 ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2', className)}
+      className={cn('mt-2 focus-visible:outline-none', className)}
       {...props}
     >
       {children}

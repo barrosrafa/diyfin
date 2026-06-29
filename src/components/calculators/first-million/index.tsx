@@ -37,19 +37,22 @@ export default function FirstMillionCalculator() {
   ]
 
   return (
-    <div className="w-full max-w-7xl mx-auto space-y-8 p-4 md:p-6 lg:p-8">
+    <div className="w-full mx-auto space-y-8 p-4 md:p-6 lg:p-8" style={{ maxWidth: '980px' }}>
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 md:gap-8">
+        {/* Formulário */}
         <div className="lg:col-span-5 space-y-6">
-          <div className="space-y-2 px-1">
-            <h2 className="text-2xl md:text-3xl font-bold text-slate-900">Calculadora do Primeiro Milhão</h2>
-            <p className="text-sm md:text-base text-slate-600">
+          <div className="space-y-2">
+            <h2 className="text-2xl md:text-3xl font-semibold" style={{ color: '#1d1d1f', letterSpacing: '-0.02em' }}>
+              Calculadora do Primeiro Milhão
+            </h2>
+            <p className="text-sm md:text-base" style={{ color: '#6e6e73' }}>
               Descubra exatamente quanto precisa investir mensalmente para atingir a meta de 1 Milhão de reais.
             </p>
           </div>
 
           <Card>
             <CardHeader>
-              <CardTitle className="text-lg">Parâmetros da Meta</CardTitle>
+              <CardTitle>Parâmetros da Meta</CardTitle>
             </CardHeader>
             <CardContent className="space-y-4">
               <div>
@@ -115,34 +118,58 @@ export default function FirstMillionCalculator() {
           </Card>
         </div>
 
+        {/* Resultados */}
         <div className="lg:col-span-7 space-y-6">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4" role="status" aria-live="polite">
-            <Card className="bg-sky-50 border-sky-200">
-              <CardContent className="p-4">
-                <p className="text-xs text-sky-700 font-semibold uppercase tracking-wider">Aporte Mensal Necessário</p>
-                <p className="text-2xl font-bold text-sky-900 mt-1">{formatarMoeda(result.requiredMonthlyContribution)}</p>
-              </CardContent>
-            </Card>
-            <Card className="bg-emerald-50 border-emerald-200">
-              <CardContent className="p-4">
-                <p className="text-xs text-emerald-700 font-semibold uppercase tracking-wider">Total Investido do Bolso</p>
-                <p className="text-2xl font-bold text-emerald-900 mt-1">{formatarMoeda(result.totalInvested)}</p>
-              </CardContent>
-            </Card>
-            <Card className="bg-purple-50 border-purple-200">
-              <CardContent className="p-4">
-                <p className="text-xs text-purple-700 font-semibold uppercase tracking-wider">Ganho em Juros</p>
-                <p className="text-2xl font-bold text-purple-900 mt-1">{formatarMoeda(result.totalInterest)}</p>
-              </CardContent>
-            </Card>
+            {/* Aporte Mensal */}
+            <div
+              className="rounded-2xl p-4"
+              style={{ background: 'rgba(0,113,227,0.06)', border: '1px solid rgba(0,113,227,0.18)' }}
+            >
+              <p className="text-xs font-semibold uppercase tracking-wider" style={{ color: '#0071e3' }}>
+                Aporte Mensal Necessário
+              </p>
+              <p className="text-2xl font-semibold mt-1" style={{ color: '#1d1d1f', letterSpacing: '-0.02em' }}>
+                {formatarMoeda(result.requiredMonthlyContribution)}
+              </p>
+            </div>
+
+            {/* Total Investido */}
+            <div
+              className="rounded-2xl p-4"
+              style={{ background: 'rgba(48,209,88,0.06)', border: '1px solid rgba(48,209,88,0.20)' }}
+            >
+              <p className="text-xs font-semibold uppercase tracking-wider" style={{ color: '#30d158' }}>
+                Total Investido do Bolso
+              </p>
+              <p className="text-2xl font-semibold mt-1" style={{ color: '#1d1d1f', letterSpacing: '-0.02em' }}>
+                {formatarMoeda(result.totalInvested)}
+              </p>
+            </div>
+
+            {/* Ganho em Juros */}
+            <div
+              className="rounded-2xl p-4"
+              style={{ background: 'rgba(191,90,242,0.06)', border: '1px solid rgba(191,90,242,0.20)' }}
+            >
+              <p className="text-xs font-semibold uppercase tracking-wider" style={{ color: '#bf5af2' }}>
+                Ganho em Juros
+              </p>
+              <p className="text-2xl font-semibold mt-1" style={{ color: '#1d1d1f', letterSpacing: '-0.02em' }}>
+                {formatarMoeda(result.totalInterest)}
+              </p>
+            </div>
           </div>
 
           <Card>
             <CardHeader>
-              <CardTitle className="text-lg">Tabela de Acúmulo</CardTitle>
+              <CardTitle>Tabela de Acúmulo</CardTitle>
             </CardHeader>
             <CardContent>
-              <Table columns={tableColumns} data={result.rows.filter((_, i) => i % 12 === 0 || i === result.rows.length - 1)} />
+              <Table
+                columns={tableColumns}
+                data={result.rows.filter((_, i) => i % 12 === 0 || i === result.rows.length - 1)}
+              />
             </CardContent>
           </Card>
         </div>

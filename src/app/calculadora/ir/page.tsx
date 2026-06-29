@@ -54,10 +54,10 @@ A regra de 2026 funciona da seguinte forma:
 
 export default function IRPage() {
   return (
-    <div className="container mx-auto px-4 py-12 max-w-4xl">
+    <div style={{ maxWidth: '980px', margin: '0 auto', padding: '64px 24px' }}>
       <div className="mb-8">
-        <h1 className="text-3xl font-bold text-slate-900 mb-2">Calculadora de Imposto de Renda 2026</h1>
-        <p className="text-slate-600">Simulador completo de IRRF mensal com as novas regras de isenção e redutores.</p>
+        <h1 className="text-3xl font-semibold mb-2" style={{ color: '#1d1d1f', letterSpacing: '-0.02em' }}>Calculadora de Imposto de Renda 2026</h1>
+        <p style={{ color: '#6e6e73' }}>Simulador completo de IRRF mensal com as novas regras de isenção e redutores.</p>
       </div>
       <Suspense fallback={<div>Carregando calculadora...</div>}>
         <IRCalculadora />

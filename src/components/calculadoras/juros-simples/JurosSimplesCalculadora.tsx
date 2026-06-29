@@ -39,7 +39,7 @@ const BarChartComponent = dynamic(
       );
     };
   }),
-  { ssr: false, loading: () => <div className="h-[300px] w-full bg-slate-100 animate-pulse rounded-lg" /> }
+  { ssr: false, loading: () => <div className="h-[300px] w-full bg-[#f5f5f7] animate-pulse rounded-lg" /> }
 );
 
 export function JurosSimplesCalculadora() {
@@ -64,18 +64,18 @@ export function JurosSimplesCalculadora() {
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
         {/* Coluna de Inputs */}
         <div className="lg:col-span-5 space-y-6">
-          <Card className="border-slate-200 shadow-sm overflow-hidden">
-            <div className="h-1.5 bg-sky-500 w-full" />
+          <Card className="border-[#d2d2d7] shadow-sm overflow-hidden">
+            <div className="h-1.5 bg-[rgba(0,113,227,0.06)]0 w-full" />
             <CardHeader>
               <CardTitle className="text-xl flex items-center gap-2">
-                <TrendingUp className="w-5 h-5 text-sky-600" />
+                <TrendingUp className="w-5 h-5 text-[#0071e3]" />
                 Parâmetros do Cálculo
               </CardTitle>
               <CardDescription>Configure os valores para simular o rendimento linear.</CardDescription>
             </CardHeader>
             <CardContent className="space-y-5">
               <div className="space-y-2">
-                <Label htmlFor="capital" className="flex items-center gap-2 text-slate-700">
+                <Label htmlFor="capital" className="flex items-center gap-2 text-[#6e6e73]">
                   <DollarSign className="w-4 h-4" /> Capital Inicial (R$)
                 </Label>
                 <Input
@@ -83,14 +83,14 @@ export function JurosSimplesCalculadora() {
                   type="number"
                   value={capital}
                   onChange={(e) => setCapital(parseFloat(e.target.value) || 0)}
-                  className="h-11 focus-visible:ring-sky-500 transition-all"
+                  className="h-11 focus-visible:ring-[#0071e3] transition-all"
                   placeholder="Ex: 1.000,00"
                 />
               </div>
               
               <div className="grid grid-cols-2 gap-4">
                 <div className="space-y-2">
-                  <Label htmlFor="taxa" className="flex items-center gap-2 text-slate-700">
+                  <Label htmlFor="taxa" className="flex items-center gap-2 text-[#6e6e73]">
                     <Percent className="w-4 h-4" /> Taxa (% período)
                   </Label>
                   <Input
@@ -98,12 +98,12 @@ export function JurosSimplesCalculadora() {
                     type="number"
                     value={taxa}
                     onChange={(e) => setTaxa(parseFloat(e.target.value) || 0)}
-                    className="h-11 focus-visible:ring-sky-500 transition-all"
+                    className="h-11 focus-visible:ring-[#0071e3] transition-all"
                     placeholder="Ex: 5"
                   />
                 </div>
                 <div className="space-y-2">
-                  <Label htmlFor="tempo" className="flex items-center gap-2 text-slate-700">
+                  <Label htmlFor="tempo" className="flex items-center gap-2 text-[#6e6e73]">
                     <Calendar className="w-4 h-4" /> Tempo (períodos)
                   </Label>
                   <Input
@@ -111,7 +111,7 @@ export function JurosSimplesCalculadora() {
                     type="number"
                     value={tempo}
                     onChange={(e) => setTempo(parseFloat(e.target.value) || 0)}
-                    className="h-11 focus-visible:ring-sky-500 transition-all"
+                    className="h-11 focus-visible:ring-[#0071e3] transition-all"
                     placeholder="Ex: 12"
                   />
                 </div>
@@ -146,22 +146,22 @@ export function JurosSimplesCalculadora() {
             </motion.div>
           </AnimatePresence>
 
-          <Card className="border-slate-200 shadow-sm">
+          <Card className="border-[#d2d2d7] shadow-sm">
             <CardHeader>
-              <CardTitle className="text-lg font-semibold text-slate-800">Visualização do Crescimento</CardTitle>
+              <CardTitle className="text-lg font-semibold text-[#1d1d1f]">Visualização do Crescimento</CardTitle>
               <CardDescription>Proporção entre o valor investido e o retorno gerado.</CardDescription>
             </CardHeader>
             <CardContent>
               <div className="pt-2">
                 <BarChartComponent data={chartData} />
               </div>
-              <div className="mt-4 flex justify-center gap-6 text-sm text-slate-500">
+              <div className="mt-4 flex justify-center gap-6 text-sm text-[#86868b]">
                 <div className="flex items-center gap-2">
                   <div className="w-3 h-3 rounded-full bg-slate-400" />
                   <span>Capital</span>
                 </div>
                 <div className="flex items-center gap-2">
-                  <div className="w-3 h-3 rounded-full bg-sky-500" />
+                  <div className="w-3 h-3 rounded-full bg-[rgba(0,113,227,0.06)]0" />
                   <span>Juros</span>
                 </div>
               </div>

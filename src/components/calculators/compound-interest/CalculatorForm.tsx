@@ -13,195 +13,184 @@ interface CalculatorFormProps {
   onChange: (field: keyof CalculatorFormValues, value: any) => void
 }
 
-/**
- * Componente de formulário para entrada de dados da calculadora.
- * Implementa máscaras de entrada, validação visual e design responsivo Pro Max.
- */
-export function CalculatorForm({ values, errors, onChange }: CalculatorFormProps) {
+const appleInputClass = `flex w-full text-sm placeholder:text-[#86868b] focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-50`
+const appleInputStyle: React.CSSProperties = {
+  height: '42px',
+  padding: '0 14px',
+  background: '#ffffff',
+  border: '1px solid #d2d2d7',
+  borderRadius: '10px',
+  color: '#1d1d1f',
+  fontSize: '0.95rem',
+  transition: 'border-color 0.15s ease, box-shadow 0.15s ease',
+}
+
+function ToggleGroup({
+  options,
+  value,
+  onChange,
+}: {
+  options: { label: string; value: string }[]
+  value: string
+  onChange: (v: string) => void
+}) {
   return (
-    <div className="w-full bg-white rounded-lg border border-slate-200 shadow-sm hover:shadow-md transition-shadow duration-200">
-      {/* Header do Formulário */}
-      <div className="px-6 py-4 border-b border-slate-100 bg-gradient-to-r from-slate-50 to-white">
-        <h3 className="text-lg font-semibold text-slate-900">Parâmetros da Simulação</h3>
-        <p className="text-sm text-slate-500 mt-1">Configure os valores para calcular o crescimento do seu patrimônio</p>
+    <div
+      className="flex items-center gap-1 p-1"
+      style={{ background: '#f5f5f7', borderRadius: '10px' }}
+    >
+      {options.map((opt) => (
+        <button
+          key={opt.value}
+          type="button"
+          onClick={() => onChange(opt.value)}
+          className="px-3 py-1.5 text-xs font-medium transition-all"
+          style={{
+            borderRadius: '8px',
+            background: value === opt.value ? '#ffffff' : 'transparent',
+            color: value === opt.value ? '#0071e3' : '#6e6e73',
+            boxShadow: value === opt.value ? '0 1px 4px rgba(0,0,0,0.08)' : 'none',
+            fontWeight: value === opt.value ? 600 : 400,
+            cursor: 'pointer',
+            border: 'none',
+          }}
+          aria-pressed={value === opt.value}
+        >
+          {opt.label}
+        </button>
+      ))}
+    </div>
+  )
+}
+
+export function CalculatorForm({ values, errors, onChange }: CalculatorFormProps) {
+  const handleFocus = (e: React.FocusEvent<HTMLInputElement>) => {
+    e.currentTarget.style.borderColor = '#0071e3'
+    e.currentTarget.style.boxShadow = '0 0 0 3px rgba(0,113,227,0.15)'
+  }
+  const handleBlur = (e: React.FocusEvent<HTMLInputElement>) => {
+    e.currentTarget.style.borderColor = errors ? '#ff3b30' : '#d2d2d7'
+    e.currentTarget.style.boxShadow = 'none'
+  }
+
+  return (
+    <div
+      className="w-full rounded-2xl overflow-hidden"
+      style={{ border: '1px solid #d2d2d7', background: '#ffffff' }}
+    >
+      {/* Header */}
+      <div
+        className="px-6 py-4"
+        style={{ borderBottom: '1px solid #e5e5ea', background: '#f5f5f7' }}
+      >
+        <h3 className="text-base font-semibold" style={{ color: '#1d1d1f' }}>
+          Parâmetros da Simulação
+        </h3>
+        <p className="text-xs mt-0.5" style={{ color: '#6e6e73' }}>
+          Configure os valores para calcular o crescimento do seu patrimônio
+        </p>
       </div>
 
-      {/* Conteúdo do Formulário */}
       <div className="p-6 space-y-6">
-        {/* Linha 1: Valor Inicial e Aporte Mensal */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          {/* Valor Inicial */}
-          <div className="space-y-2">
-            <Label htmlFor="capitalInicial" className="text-slate-700 font-medium">
-              Valor Inicial
-              <span className="text-slate-400 font-normal ml-1">(R$)</span>
-            </Label>
-            <div className="relative">
+        {/* Valor Inicial + Aporte */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+          {[
+            { id: 'capitalInicial', label: 'Valor Inicial', suffix: '(R$)', mask: CURRENCY_MASK, field: 'capitalInicial' as const },
+            { id: 'aporteMensal', label: 'Aporte Mensal', suffix: '(R$)', mask: CURRENCY_MASK, field: 'aporteMensal' as const },
+          ].map(({ id, label, suffix, mask, field }) => (
+            <div key={id} className="space-y-2">
+              <Label htmlFor={id}>
+                {label}{' '}
+                <span style={{ color: '#86868b', fontWeight: 400 }}>{suffix}</span>
+              </Label>
               <IMaskInput
-                id="capitalInicial"
-                {...CURRENCY_MASK}
-                value={values.capitalInicial.toString()}
+                id={id}
+                {...mask}
+                value={values[field].toString()}
                 unmask={true}
-                onAccept={(value) => onChange('capitalInicial', Number(value))}
+                onAccept={(value) => onChange(field, Number(value))}
                 placeholder="R$ 0,00"
-                className={`flex h-11 w-full rounded-md border bg-white px-4 py-2.5 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-slate-400 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-500 focus-visible:ring-offset-2 transition-all duration-200 disabled:cursor-not-allowed disabled:opacity-50 ${
-                  errors.capitalInicial 
-                    ? 'border-red-500 focus-visible:ring-red-500' 
-                    : 'border-slate-300 hover:border-slate-400'
-                }`}
+                className={appleInputClass}
+                style={{
+                  ...appleInputStyle,
+                  borderColor: errors[field] ? '#ff3b30' : '#d2d2d7',
+                }}
+                onFocus={handleFocus}
+                onBlur={handleBlur}
               />
+              {errors[field] && (
+                <p className="text-xs font-medium" style={{ color: '#ff3b30' }}>
+                  {errors[field]}
+                </p>
+              )}
             </div>
-            {errors.capitalInicial && (
-              <p className="text-xs font-medium text-red-600 flex items-center gap-1 mt-1">
-                <span className="inline-block w-1 h-1 bg-red-600 rounded-full"></span>
-                {errors.capitalInicial}
-              </p>
-            )}
-          </div>
-
-          {/* Aporte Mensal */}
-          <div className="space-y-2">
-            <Label htmlFor="aporteMensal" className="text-slate-700 font-medium">
-              Aporte Mensal
-              <span className="text-slate-400 font-normal ml-1">(R$)</span>
-            </Label>
-            <div className="relative">
-              <IMaskInput
-                id="aporteMensal"
-                {...CURRENCY_MASK}
-                value={values.aporteMensal.toString()}
-                unmask={true}
-                onAccept={(value) => onChange('aporteMensal', Number(value))}
-                placeholder="R$ 0,00"
-                className={`flex h-11 w-full rounded-md border bg-white px-4 py-2.5 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-slate-400 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-500 focus-visible:ring-offset-2 transition-all duration-200 disabled:cursor-not-allowed disabled:opacity-50 ${
-                  errors.aporteMensal 
-                    ? 'border-red-500 focus-visible:ring-red-500' 
-                    : 'border-slate-300 hover:border-slate-400'
-                }`}
-              />
-            </div>
-            {errors.aporteMensal && (
-              <p className="text-xs font-medium text-red-600 flex items-center gap-1 mt-1">
-                <span className="inline-block w-1 h-1 bg-red-600 rounded-full"></span>
-                {errors.aporteMensal}
-              </p>
-            )}
-          </div>
+          ))}
         </div>
 
-        {/* Linha 2: Taxa de Juros */}
+        {/* Taxa de Juros */}
         <div className="space-y-2">
           <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-3">
-            <Label htmlFor="taxaInput" className="text-slate-700 font-medium">
-              Taxa de Juros
-              <span className="text-slate-400 font-normal ml-1">(%)</span>
+            <Label htmlFor="taxaInput">
+              Taxa de Juros{' '}
+              <span style={{ color: '#86868b', fontWeight: 400 }}>(%)</span>
             </Label>
-            <div className="flex items-center gap-2 bg-slate-100 p-1 rounded-lg w-fit">
-              <button
-                onClick={() => onChange('taxaBase', 'mensal')}
-                className={`px-3 py-1.5 rounded-md text-xs font-medium transition-all duration-200 ${
-                  values.taxaBase === 'mensal'
-                    ? 'bg-white text-sky-600 shadow-sm'
-                    : 'text-slate-600 hover:text-slate-900'
-                }`}
-                aria-pressed={values.taxaBase === 'mensal'}
-              >
-                Mensal
-              </button>
-              <button
-                onClick={() => onChange('taxaBase', 'anual')}
-                className={`px-3 py-1.5 rounded-md text-xs font-medium transition-all duration-200 ${
-                  values.taxaBase === 'anual'
-                    ? 'bg-white text-sky-600 shadow-sm'
-                    : 'text-slate-600 hover:text-slate-900'
-                }`}
-                aria-pressed={values.taxaBase === 'anual'}
-              >
-                Anual
-              </button>
-            </div>
-          </div>
-          <div className="relative">
-            <IMaskInput
-              id="taxaInput"
-              {...PERCENT_MASK}
-              value={values.taxaInput.toString()}
-              unmask={true}
-              onAccept={(value) => onChange('taxaInput', Number(value))}
-              placeholder="0,00"
-              className={`flex h-11 w-full rounded-md border bg-white px-4 py-2.5 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-slate-400 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-500 focus-visible:ring-offset-2 transition-all duration-200 disabled:cursor-not-allowed disabled:opacity-50 ${
-                errors.taxaInput 
-                  ? 'border-red-500 focus-visible:ring-red-500' 
-                  : 'border-slate-300 hover:border-slate-400'
-              }`}
+            <ToggleGroup
+              options={[{ label: 'Mensal', value: 'mensal' }, { label: 'Anual', value: 'anual' }]}
+              value={values.taxaBase}
+              onChange={(v) => onChange('taxaBase', v)}
             />
           </div>
+          <IMaskInput
+            id="taxaInput"
+            {...PERCENT_MASK}
+            value={values.taxaInput.toString()}
+            unmask={true}
+            onAccept={(value) => onChange('taxaInput', Number(value))}
+            placeholder="0,00"
+            className={appleInputClass}
+            style={{
+              ...appleInputStyle,
+              borderColor: errors.taxaInput ? '#ff3b30' : '#d2d2d7',
+            }}
+            onFocus={handleFocus}
+            onBlur={handleBlur}
+          />
           {errors.taxaInput && (
-            <p className="text-xs font-medium text-red-600 flex items-center gap-1 mt-1">
-              <span className="inline-block w-1 h-1 bg-red-600 rounded-full"></span>
-              {errors.taxaInput}
-            </p>
+            <p className="text-xs font-medium" style={{ color: '#ff3b30' }}>{errors.taxaInput}</p>
           )}
         </div>
 
-        {/* Linha 3: Período */}
+        {/* Período */}
         <div className="space-y-2">
           <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-3">
-            <Label htmlFor="periodoInput" className="text-slate-700 font-medium">
-              Período
-            </Label>
-            <div className="flex items-center gap-2 bg-slate-100 p-1 rounded-lg w-fit">
-              <button
-                onClick={() => onChange('periodoUnidade', 'meses')}
-                className={`px-3 py-1.5 rounded-md text-xs font-medium transition-all duration-200 ${
-                  values.periodoUnidade === 'meses'
-                    ? 'bg-white text-sky-600 shadow-sm'
-                    : 'text-slate-600 hover:text-slate-900'
-                }`}
-                aria-pressed={values.periodoUnidade === 'meses'}
-              >
-                Meses
-              </button>
-              <button
-                onClick={() => onChange('periodoUnidade', 'anos')}
-                className={`px-3 py-1.5 rounded-md text-xs font-medium transition-all duration-200 ${
-                  values.periodoUnidade === 'anos'
-                    ? 'bg-white text-sky-600 shadow-sm'
-                    : 'text-slate-600 hover:text-slate-900'
-                }`}
-                aria-pressed={values.periodoUnidade === 'anos'}
-              >
-                Anos
-              </button>
-            </div>
-          </div>
-          <div className="relative">
-            <Input
-              id="periodoInput"
-              type="number"
-              value={values.periodoInput}
-              onChange={(e) => onChange('periodoInput', Number(e.target.value))}
-              placeholder="0"
-              className={`h-11 text-sm focus-visible:ring-sky-500 focus-visible:ring-offset-2 transition-all duration-200 ${
-                errors.periodoInput 
-                  ? 'border-red-500 focus-visible:ring-red-500' 
-                  : 'border-slate-300 hover:border-slate-400'
-              }`}
+            <Label htmlFor="periodoInput">Período</Label>
+            <ToggleGroup
+              options={[{ label: 'Meses', value: 'meses' }, { label: 'Anos', value: 'anos' }]}
+              value={values.periodoUnidade}
+              onChange={(v) => onChange('periodoUnidade', v)}
             />
           </div>
+          <Input
+            id="periodoInput"
+            type="number"
+            value={values.periodoInput}
+            onChange={(e) => onChange('periodoInput', Number(e.target.value))}
+            placeholder="0"
+            style={errors.periodoInput ? { borderColor: '#ff3b30' } : {}}
+          />
           {errors.periodoInput && (
-            <p className="text-xs font-medium text-red-600 flex items-center gap-1 mt-1">
-              <span className="inline-block w-1 h-1 bg-red-600 rounded-full"></span>
-              {errors.periodoInput}
-            </p>
+            <p className="text-xs font-medium" style={{ color: '#ff3b30' }}>{errors.periodoInput}</p>
           )}
         </div>
       </div>
 
-      {/* Footer com dica */}
-      <div className="px-6 py-3 bg-sky-50/50 border-t border-slate-100 rounded-b-lg">
-        <p className="text-xs text-slate-600">
-          <span className="font-medium text-slate-700">💡 Dica:</span> Experimente diferentes cenários para encontrar a melhor estratégia de investimento.
+      {/* Footer dica */}
+      <div
+        className="px-6 py-3"
+        style={{ borderTop: '1px solid #e5e5ea', background: '#f5f5f7' }}
+      >
+        <p className="text-xs" style={{ color: '#6e6e73' }}>
+          <span style={{ color: '#1d1d1f', fontWeight: 600 }}>Dica:</span> Experimente diferentes cenários para encontrar a melhor estratégia.
         </p>
       </div>
     </div>

@@ -94,7 +94,7 @@ export function FinanciamentoCalculadora() {
         </Card>
 
         <div className="space-y-6">
-          <Card className="border-sky-100 bg-sky-50/30">
+          <Card className="border-[rgba(0,113,227,0.10)] bg-[rgba(0,113,227,0.06)]/30">
             <CardHeader>
               <CardTitle className="text-lg">Resumo das Parcelas</CardTitle>
             </CardHeader>
@@ -133,7 +133,7 @@ export function FinanciamentoCalculadora() {
         <CardContent>
           <div className="overflow-x-auto">
             <table className="w-full text-sm text-left">
-              <thead className="text-xs text-slate-500 uppercase bg-slate-50">
+              <thead className="text-xs text-[#86868b] uppercase bg-[#f5f5f7]">
                 <tr>
                   <th className="px-4 py-3">Mês</th>
                   <th className="px-4 py-3">Parcela</th>
@@ -144,12 +144,12 @@ export function FinanciamentoCalculadora() {
               </thead>
               <tbody className="divide-y divide-slate-100">
                 {results.schedule.map((row: any) => (
-                  <tr key={row.month} className="hover:bg-slate-50/50">
+                  <tr key={row.month} className="hover:bg-[#f5f5f7]/50">
                     <td className="px-4 py-3 font-medium">{row.month}</td>
                     <td className="px-4 py-3">{formatCurrency(row.payment)}</td>
                     <td className="px-4 py-3 text-red-500">{formatCurrency(row.interest)}</td>
-                    <td className="px-4 py-3 text-emerald-600">{formatCurrency(row.amortization)}</td>
-                    <td className="px-4 py-3 text-slate-500">{formatCurrency(row.balance)}</td>
+                    <td className="px-4 py-3 text-[#30d158]">{formatCurrency(row.amortization)}</td>
+                    <td className="px-4 py-3 text-[#86868b]">{formatCurrency(row.balance)}</td>
                   </tr>
                 ))}
               </tbody>

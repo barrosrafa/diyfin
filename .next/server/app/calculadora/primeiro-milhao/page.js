@@ -1,0 +1,13 @@
+var R=require("../../../chunks/ssr/[turbopack]_runtime.js")("server/app/calculadora/primeiro-milhao/page.js")
+R.c("server/chunks/ssr/[root-of-the-server]__1s5h5vg._.js")
+R.c("server/chunks/ssr/0ly8_next_dist_esm_build_templates_app-page_1oskv_e.js")
+R.c("server/chunks/ssr/[root-of-the-server]__1n2eim8._.js")
+R.c("server/chunks/ssr/[root-of-the-server]__04-qz4r._.js")
+R.c("server/chunks/ssr/_0hyriu4._.js")
+R.c("server/chunks/ssr/0ly8_next_dist_client_components_1_uubov._.js")
+R.c("server/chunks/ssr/0ly8_next_dist_client_components_builtin_forbidden_1xieu6x.js")
+R.c("server/chunks/ssr/0ly8_next_dist_client_components_builtin_unauthorized_0n4-qeq.js")
+R.c("server/chunks/ssr/0ly8_next_dist_client_components_builtin_global-error_1_ntum1.js")
+R.c("server/chunks/ssr/_next-internal_server_app_calculadora_primeiro-milhao_page_actions_1y_vhx-.js")
+R.m(21820)
+module.exports=R.m(21820).exports

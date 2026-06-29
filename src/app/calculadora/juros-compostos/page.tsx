@@ -61,28 +61,46 @@ Onde:
 
 export default function JurosCompostosPage() {
   return (
-    <main className="w-full bg-gradient-to-b from-slate-50 to-white">
+    <main className="w-full" style={{ background: '#ffffff' }}>
       {/* Hero Section */}
-      <div className="container mx-auto px-4 py-8 md:py-12 lg:py-16 max-w-7xl">
-        <div className="mb-8 md:mb-12 max-w-4xl mx-auto text-center">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-sky-100 text-sky-700 text-xs font-semibold mb-4">
-            <span>✨</span> Ferramenta Gratuita
-          </div>
-          <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold text-slate-900 mb-4 leading-tight">
-            Calculadora de <span className="bg-gradient-to-r from-sky-600 to-blue-600 bg-clip-text text-transparent">Juros Compostos</span>
-          </h1>
-          <p className="text-lg md:text-xl text-slate-600 leading-relaxed">
-            Simule o crescimento do seu patrimônio com aportes mensais e reinvestimento de lucros. Descubra o poder dos juros compostos no seu futuro financeiro.
-          </p>
-        </div>
+      <div style={{ maxWidth: '980px', margin: '0 auto', padding: '64px 24px 40px', textAlign: 'center' }}>
+        <span
+          style={{
+            display: 'inline-block',
+            fontSize: '0.75rem',
+            fontWeight: 600,
+            letterSpacing: '0.05em',
+            textTransform: 'uppercase',
+            color: '#0071e3',
+            background: 'rgba(0,113,227,0.08)',
+            borderRadius: '9999px',
+            padding: '4px 12px',
+            marginBottom: '16px',
+          }}
+        >
+          Ferramenta Gratuita
+        </span>
+        <h1
+          className="font-semibold mb-4"
+          style={{ fontSize: 'clamp(2rem, 5vw, 3.5rem)', color: '#1d1d1f', letterSpacing: '-0.025em', lineHeight: 1.05 }}
+        >
+          Calculadora de{' '}
+          <span style={{ color: '#0071e3' }}>Juros Compostos</span>
+        </h1>
+        <p style={{ fontSize: '1.1rem', color: '#6e6e73', maxWidth: '560px', margin: '0 auto', lineHeight: 1.5 }}>
+          Simule o crescimento do seu patrimônio com aportes mensais e reinvestimento de lucros.
+        </p>
       </div>
 
       {/* Calculadora Principal */}
-      <div className="container mx-auto px-4 py-8 md:py-12 max-w-7xl">
+      <div style={{ maxWidth: '980px', margin: '0 auto', padding: '0 24px 64px' }}>
         <Suspense fallback={
           <div className="h-[600px] flex flex-col items-center justify-center gap-4">
-            <div className="w-12 h-12 rounded-full border-4 border-slate-200 border-t-sky-500 animate-spin"></div>
-            <p className="text-slate-600 font-medium">Carregando calculadora...</p>
+            <div
+              className="w-12 h-12 rounded-full border-4 animate-spin"
+              style={{ borderColor: '#f5f5f7', borderTopColor: '#0071e3' }}
+            />
+            <p style={{ color: '#6e6e73', fontWeight: 500 }}>Carregando calculadora...</p>
           </div>
         }>
           <CompoundInterestCalculator />
@@ -90,22 +108,38 @@ export default function JurosCompostosPage() {
       </div>
 
       {/* Conteúdo Técnico */}
-      <div className="container mx-auto px-4 py-12 md:py-16 lg:py-20 max-w-4xl">
+      <div style={{ maxWidth: '680px', margin: '0 auto', padding: '0 24px 80px' }}>
         <CalculatorContent content={technicalContent} />
       </div>
 
       {/* CTA Final */}
-      <div className="bg-gradient-to-r from-sky-600 to-blue-600 py-12 md:py-16 mt-12 md:mt-16">
-        <div className="container mx-auto px-4 max-w-4xl text-center">
-          <h2 className="text-2xl md:text-3xl font-bold text-white mb-4">
+      <div style={{ background: '#1d1d1f', padding: '64px 24px' }}>
+        <div style={{ maxWidth: '680px', margin: '0 auto', textAlign: 'center' }}>
+          <h2
+            className="font-semibold mb-4"
+            style={{ fontSize: '2rem', color: '#ffffff', letterSpacing: '-0.02em' }}
+          >
             Pronto para começar a investir?
           </h2>
-          <p className="text-sky-100 mb-8 text-lg">
+          <p style={{ color: '#86868b', marginBottom: '32px', fontSize: '1.05rem', lineHeight: 1.5 }}>
             Use nossa calculadora para planejar diferentes cenários e encontre a melhor estratégia para seu futuro financeiro.
           </p>
-          <button className="px-8 py-3 bg-white text-sky-600 font-semibold rounded-lg hover:bg-sky-50 transition-colors duration-200 shadow-lg hover:shadow-xl">
+          <a
+            href="/calculadora"
+            style={{
+              display: 'inline-block',
+              padding: '14px 28px',
+              background: '#0071e3',
+              color: '#ffffff',
+              borderRadius: '9999px',
+              fontWeight: 600,
+              fontSize: '0.95rem',
+              textDecoration: 'none',
+              transition: 'background 0.2s ease',
+            }}
+          >
             Explorar Mais Calculadoras
-          </button>
+          </a>
         </div>
       </div>
     </main>

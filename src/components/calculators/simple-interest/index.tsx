@@ -2,12 +2,11 @@
 
 import React, { useState, useMemo } from 'react'
 import { calculateSimpleInterest } from '@/lib/finance/simple-interest'
-import { formatarMoeda, formatarPercentual } from '@/lib/finance/utils'
+import { formatarMoeda } from '@/lib/finance/utils'
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Select } from '@/components/ui/select'
-import { Button } from '@/components/ui/button'
 import { Table } from '@/components/ui/table'
 
 export default function SimpleInterestCalculator() {
@@ -35,19 +34,22 @@ export default function SimpleInterestCalculator() {
   ]
 
   return (
-    <div className="w-full max-w-7xl mx-auto space-y-8 p-4 md:p-6 lg:p-8">
+    <div className="w-full mx-auto space-y-8 p-4 md:p-6 lg:p-8" style={{ maxWidth: '980px' }}>
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 md:gap-8">
+        {/* Formulário */}
         <div className="lg:col-span-5 space-y-6">
-          <div className="space-y-2 px-1">
-            <h2 className="text-2xl md:text-3xl font-bold text-slate-900">Simulador de Juros Simples</h2>
-            <p className="text-sm md:text-base text-slate-600">
+          <div className="space-y-2">
+            <h2 className="text-2xl md:text-3xl font-semibold" style={{ color: '#1d1d1f', letterSpacing: '-0.02em' }}>
+              Simulador de Juros Simples
+            </h2>
+            <p className="text-sm md:text-base" style={{ color: '#6e6e73' }}>
               Calcule rendimentos em regime de juros simples onde a taxa incide exclusivamente sobre o capital inicial.
             </p>
           </div>
 
           <Card>
             <CardHeader>
-              <CardTitle className="text-lg">Parâmetros da Simulação</CardTitle>
+              <CardTitle>Parâmetros da Simulação</CardTitle>
             </CardHeader>
             <CardContent className="space-y-4">
               <div>
@@ -105,36 +107,57 @@ export default function SimpleInterestCalculator() {
           </Card>
         </div>
 
+        {/* Resultados */}
         <div className="lg:col-span-7 space-y-6">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4" role="status" aria-live="polite">
-            <Card className="bg-sky-50 border-sky-200">
-              <CardContent className="p-4">
-                <p className="text-xs text-sky-700 font-semibold uppercase tracking-wider">Valor Investido</p>
-                <p className="text-2xl font-bold text-sky-900 mt-1">{formatarMoeda(initialValue)}</p>
-              </CardContent>
-            </Card>
-            <Card className="bg-emerald-50 border-emerald-200">
-              <CardContent className="p-4">
-                <p className="text-xs text-emerald-700 font-semibold uppercase tracking-wider">Total em Juros</p>
-                <p className="text-2xl font-bold text-emerald-900 mt-1">{formatarMoeda(result.totalInterest)}</p>
-              </CardContent>
-            </Card>
-            <Card className="bg-slate-900 text-white border-slate-800">
-              <CardContent className="p-4">
-                <p className="text-xs text-slate-400 font-semibold uppercase tracking-wider">Montante Final</p>
-                <p className="text-2xl font-bold text-sky-400 mt-1">{formatarMoeda(result.totalAmount)}</p>
-              </CardContent>
-            </Card>
+            {/* Valor Investido */}
+            <div
+              className="rounded-2xl p-4"
+              style={{ background: 'rgba(0,113,227,0.06)', border: '1px solid rgba(0,113,227,0.18)' }}
+            >
+              <p className="text-xs font-semibold uppercase tracking-wider" style={{ color: '#0071e3' }}>
+                Valor Investido
+              </p>
+              <p className="text-2xl font-semibold mt-1" style={{ color: '#1d1d1f', letterSpacing: '-0.02em' }}>
+                {formatarMoeda(initialValue)}
+              </p>
+            </div>
+
+            {/* Total em Juros */}
+            <div
+              className="rounded-2xl p-4"
+              style={{ background: 'rgba(48,209,88,0.06)', border: '1px solid rgba(48,209,88,0.20)' }}
+            >
+              <p className="text-xs font-semibold uppercase tracking-wider" style={{ color: '#30d158' }}>
+                Total em Juros
+              </p>
+              <p className="text-2xl font-semibold mt-1" style={{ color: '#1d1d1f', letterSpacing: '-0.02em' }}>
+                {formatarMoeda(result.totalInterest)}
+              </p>
+            </div>
+
+            {/* Montante Final */}
+            <div
+              className="rounded-2xl p-4"
+              style={{ background: '#1d1d1f' }}
+            >
+              <p className="text-xs font-semibold uppercase tracking-wider" style={{ color: '#86868b' }}>
+                Montante Final
+              </p>
+              <p className="text-2xl font-semibold mt-1" style={{ color: '#0071e3', letterSpacing: '-0.02em' }}>
+                {formatarMoeda(result.totalAmount)}
+              </p>
+            </div>
           </div>
 
           <Card>
             <CardHeader>
-              <CardTitle className="text-lg">Tabela de Evolução Mensal</CardTitle>
+              <CardTitle>Tabela de Evolução Mensal</CardTitle>
             </CardHeader>
             <CardContent>
               <Table columns={tableColumns} data={result.rows.slice(0, 24)} />
               {result.rows.length > 24 && (
-                <p className="text-xs text-slate-500 mt-2 text-center">
+                <p className="text-xs mt-2 text-center" style={{ color: '#86868b' }}>
                   Exibindo as primeiras 24 parcelas de um total de {result.rows.length - 1}.
                 </p>
               )}

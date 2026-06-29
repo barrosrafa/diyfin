@@ -1,41 +1,36 @@
 /*
  * ┌─────────────────────────────────────────────────────────────┐
- * │  diyfin — Design Tokens                                      │
+ * │  diyfin — Design Tokens (Apple Design Language)              │
  * │  CSS Custom Properties separados do Tailwind @theme.         │
  * │  Importar no topo de src/app/globals.css.                    │
  * └─────────────────────────────────────────────────────────────┘
  *
- * Paleta: azul-céu (brand) + esmeralda (accent), ambos em HSL.
- * Fonte base: Inter (carregada via next/font/google no layout).
+ * Paleta: azul Apple (#0071e3) + neutros Apple.
+ * Fonte base: system font stack nativa (SF Pro / Helvetica Neue).
  * Espaçamento: escala 4 px × multiplicadores 1·2·3·4·6·8·12·16.
- * Sombras: glass · card · elevated — intensidades crescentes.
- *
- * Estratégia de override:
- *   @theme (globals.css) → gera utilitários Tailwind + CSS vars
- *   tokens.css (@layer base) → sobrescreve vars semânticas por tema
- *   Precedência: dark @layer base > light @layer base > @theme
+ * Sombras: sutis e planas, estilo Apple.
  */
 
 /* ─── Modo Claro (padrão) ─────────────────────────────────────── */
 @layer base {
   :root {
     /* ── Fundos & Superfícies ──────────────────────────────── */
-    --background:     210 40% 98%;
-    --surface:        0   0%  100%;
-    --surface-raised: 210 40% 99%;
+    --background:     0 0% 100%;      /* #ffffff */
+    --surface:        0 0% 100%;      /* #ffffff */
+    --surface-raised: 0 0% 96%;       /* #f5f5f7 */
 
     /* ── Texto ─────────────────────────────────────────────── */
-    --foreground:        222 47% 11%;
-    --foreground-muted:  215 20% 45%;
-    --foreground-subtle: 215 20% 65%;
+    --foreground:        0 0% 11%;    /* #1d1d1f */
+    --foreground-muted:  0 0% 43%;    /* #6e6e73 */
+    --foreground-subtle: 0 0% 53%;    /* #86868b */
 
-    /* ── Primária (brand sky-blue) ─────────────────────────── */
-    --primary:            199 89% 45%;
-    --primary-foreground: 0   0%  100%;
+    /* ── Primária (Apple Blue) ─────────────────────────────── */
+    --primary:            211 100% 45%; /* #0071e3 */
+    --primary-foreground: 0   0%   100%;
 
-    /* ── Acento (emerald green) ────────────────────────────── */
-    --accent:            158 64% 42%;
-    --accent-foreground: 0   0%  100%;
+    /* ── Acento (Apple Blue hover) ─────────────────────────── */
+    --accent:            211 100% 46%; /* #0077ed */
+    --accent-foreground: 0   0%   100%;
 
     /* ── Estados ───────────────────────────────────────────── */
     --destructive:            0 84% 55%;
@@ -44,25 +39,27 @@
     --warning-foreground:     0  0% 100%;
 
     /* ── Bordas & Inputs ───────────────────────────────────── */
-    --border:        214 32% 91%;
-    --border-subtle: 214 32% 96%;
-    --input:         214 32% 91%;
-    --ring:          199 89% 45%;
+    --border:        0 0% 82%;        /* #d2d2d7 */
+    --border-subtle: 0 0% 90%;        /* #e5e5ea */
+    --input:         0 0% 82%;        /* #d2d2d7 */
+    --ring:          211 100% 45%;    /* #0071e3 */
 
     /* ── Componentes ───────────────────────────────────────── */
-    --card:               0   0%  100%;
-    --card-foreground:    222 47% 11%;
+    --card:               0   0%  100%;  /* #ffffff */
+    --card-foreground:    0   0%  11%;   /* #1d1d1f */
     --popover:            0   0%  100%;
-    --popover-foreground: 222 47% 11%;
-    --muted:              210 40% 96%;
-    --muted-foreground:   215 20% 45%;
+    --popover-foreground: 0   0%  11%;
+    --muted:              0   0%  96%;   /* #f5f5f7 */
+    --muted-foreground:   0   0%  43%;   /* #6e6e73 */
 
     /* ── Raio base (usado por componentes shadcn-like) ─────── */
-    --radius: 0.5rem;
+    --radius: 0.75rem;
 
-    /* ── Fonte base ─────────────────────────────────────────── */
-    --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
-    --font-mono: "JetBrains Mono", ui-monospace, monospace;
+    /* ── Fonte base — system stack Apple ───────────────────── */
+    --font-sans: -apple-system, BlinkMacSystemFont, "SF Pro Text", "SF Pro Display",
+                 "Helvetica Neue", Helvetica, Arial, sans-serif;
+    --font-mono: ui-monospace, "SF Mono", SFMono-Regular, Menlo, Monaco, Consolas,
+                 "Liberation Mono", "Courier New", monospace;
 
     /* ── Espaçamento (base 4 px) ────────────────────────────── */
     --space-1:  0.25rem;  /*  4 px */
@@ -74,107 +71,14 @@
     --space-12: 3rem;     /* 48 px */
     --space-16: 4rem;     /* 64 px */
 
-    /* ── Sombras ────────────────────────────────────────────── */
-    --shadow-glass:    0 8px 32px 0 rgba(14, 165, 233, 0.12);
-    --shadow-card:     0 4px 24px 0 rgba(0, 0, 0, 0.08);
-    --shadow-elevated: 0 16px 48px 0 rgba(0, 0, 0, 0.14);
+    /* ── Sombras — sutis, estilo Apple ─────────────────────── */
+    --shadow-glass:    0 2px 16px 0 rgba(0, 0, 0, 0.06);
+    --shadow-card:     0 2px 12px 0 rgba(0, 0, 0, 0.06);
+    --shadow-elevated: 0 8px 32px 0 rgba(0, 0, 0, 0.10);
 
     /* ── Glass-morphism ─────────────────────────────────────── */
     --glass-bg:     rgba(255, 255, 255, 0.72);
-    --glass-border: rgba(255, 255, 255, 0.50);
+    --glass-border: rgba(210, 210, 215, 0.50);
     --glass-blur:   blur(12px);
-  }
-
-  /* ─── Modo Escuro — classe .dark (ThemeProvider / toggle) ─── */
-  .dark {
-    --background:     222 47%  5%;
-    --surface:        222 47%  8%;
-    --surface-raised: 222 47% 11%;
-
-    --foreground:        210 40% 96%;
-    --foreground-muted:  215 20% 60%;
-    --foreground-subtle: 215 20% 40%;
-
-    --primary:            199 89% 52%;
-    --primary-foreground: 0   0%  100%;
-
-    --accent:            158 64% 52%;
-    --accent-foreground: 0   0%  100%;
-
-    --destructive:            0 62% 45%;
-    --destructive-foreground: 0  0% 100%;
-    --warning:                38 92% 50%;
-    --warning-foreground:     0  0% 100%;
-
-    --border:        217 33% 18%;
-    --border-subtle: 217 33% 14%;
-    --input:         217 33% 18%;
-    --ring:          199 89% 52%;
-
-    --card:               222 47%  8%;
-    --card-foreground:    210 40% 96%;
-    --popover:            222 47%  8%;
-    --popover-foreground: 210 40% 96%;
-    --muted:              217 33% 18%;
-    --muted-foreground:   215 20% 60%;
-
-    --shadow-glass:    0 8px 32px 0 rgba(14, 165, 233, 0.18);
-    --shadow-card:     0 4px 24px 0 rgba(0, 0, 0, 0.30);
-    --shadow-elevated: 0 16px 48px 0 rgba(0, 0, 0, 0.40);
-
-    --glass-bg:     rgba(15, 23, 42, 0.72);
-    --glass-border: rgba(255, 255, 255, 0.08);
-    --glass-blur:   blur(12px);
-  }
-}
-
-/* ─── Modo Escuro — preferência do sistema (sem classe JS) ───── */
-/*
- * :root:not([data-theme="light"]) permite que uma troca manual
- * para claro (data-theme="light" no <html>) anule a mídia query
- * sem necessidade de nenhuma lógica JavaScript adicional.
- */
-@media (prefers-color-scheme: dark) {
-  @layer base {
-    :root:not([data-theme="light"]) {
-      --background:     222 47%  5%;
-      --surface:        222 47%  8%;
-      --surface-raised: 222 47% 11%;
-
-      --foreground:        210 40% 96%;
-      --foreground-muted:  215 20% 60%;
-      --foreground-subtle: 215 20% 40%;
-
-      --primary:            199 89% 52%;
-      --primary-foreground: 0   0%  100%;
-
-      --accent:            158 64% 52%;
-      --accent-foreground: 0   0%  100%;
-
-      --destructive:            0 62% 45%;
-      --destructive-foreground: 0  0% 100%;
-      --warning:                38 92% 50%;
-      --warning-foreground:     0  0% 100%;
-
-      --border:        217 33% 18%;
-      --border-subtle: 217 33% 14%;
-      --input:         217 33% 18%;
-      --ring:          199 89% 52%;
-
-      --card:               222 47%  8%;
-      --card-foreground:    210 40% 96%;
-      --popover:            222 47%  8%;
-      --popover-foreground: 210 40% 96%;
-      --muted:              217 33% 18%;
-      --muted-foreground:   215 20% 60%;
-
-      --shadow-glass:    0 8px 32px 0 rgba(14, 165, 233, 0.18);
-      --shadow-card:     0 4px 24px 0 rgba(0, 0, 0, 0.30);
-      --shadow-elevated: 0 16px 48px 0 rgba(0, 0, 0, 0.40);
-
-      --glass-bg:     rgba(15, 23, 42, 0.72);
-      --glass-border: rgba(255, 255, 255, 0.08);
-      --glass-blur:   blur(12px);
-    }
   }
 }

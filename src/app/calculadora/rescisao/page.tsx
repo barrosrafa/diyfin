@@ -53,10 +53,10 @@ Uma das grandes mudanças para 2026 é a consolidação da isenção efetiva par
 
 export default function RescisaoPage() {
   return (
-    <div className="container mx-auto px-4 py-12 max-w-4xl">
+    <div style={{ maxWidth: '980px', margin: '0 auto', padding: '64px 24px' }}>
       <div className="mb-8">
-        <h1 className="text-3xl font-bold text-slate-900 mb-2">Calculadora de Rescisão (Simples)</h1>
-        <p className="text-slate-600">Simulação de salário líquido e descontos fiscais para 2026.</p>
+        <h1 className="text-3xl font-semibold mb-2" style={{ color: '#1d1d1f', letterSpacing: '-0.02em' }}>Calculadora de Rescisão (Simples)</h1>
+        <p style={{ color: '#6e6e73' }}>Simulação de salário líquido e descontos fiscais para 2026.</p>
       </div>
       <Suspense fallback={<div>Carregando calculadora...</div>}>
         <RescisaoCalculadora />

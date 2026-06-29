@@ -50,10 +50,10 @@ Esta simulação foca no **Custo Efetivo Total (CET)** aproximado. Bancos costum
 
 export default function FinanciamentoPage() {
   return (
-    <div className="container mx-auto px-4 py-12 max-w-4xl">
+    <div style={{ maxWidth: '980px', margin: '0 auto', padding: '64px 24px' }}>
       <div className="mb-8">
-        <h1 className="text-3xl font-bold text-slate-900 mb-2">Simulador de Financiamento</h1>
-        <p className="text-slate-600">Ferramenta técnica para comparação de sistemas de amortização SAC e PRICE.</p>
+        <h1 className="text-3xl font-semibold mb-2" style={{ color: '#1d1d1f', letterSpacing: '-0.02em' }}>Simulador de Financiamento</h1>
+        <p style={{ color: '#6e6e73' }}>Ferramenta técnica para comparação de sistemas de amortização SAC e PRICE.</p>
       </div>
       <Suspense fallback={<div>Carregando simulador...</div>}>
         <FinanciamentoCalculadora />

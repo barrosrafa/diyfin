@@ -1,0 +1,17 @@
+{
+  "/_global-error/page": "/_global-error",
+  "/_not-found/page": "/_not-found",
+  "/calculadora/financiamento-price/page": "/calculadora/financiamento-price",
+  "/calculadora/financiamento-sac/page": "/calculadora/financiamento-sac",
+  "/calculadora/financiamento/page": "/calculadora/financiamento",
+  "/calculadora/ir/page": "/calculadora/ir",
+  "/calculadora/juros-compostos/page": "/calculadora/juros-compostos",
+  "/calculadora/juros-simples/page": "/calculadora/juros-simples",
+  "/calculadora/page": "/calculadora",
+  "/calculadora/preco-teto-fii/page": "/calculadora/preco-teto-fii",
+  "/calculadora/primeiro-milhao/page": "/calculadora/primeiro-milhao",
+  "/calculadora/rescisao/page": "/calculadora/rescisao",
+  "/investidor10/page": "/investidor10",
+  "/page": "/",
+  "/sobre/page": "/sobre"
+}

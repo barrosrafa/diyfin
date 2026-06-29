@@ -15,7 +15,7 @@ export default function FinancingSACCalculator() {
 
   const result = useMemo(() => {
     const prazoMeses = (Number(prazoAnos) || 0) * 12
-    const taxaMensalDecimal = (Math.pow(1 + (Number(taxaAnual) || 0) / 100, 1 / 12) - 1)
+    const taxaMensalDecimal = Math.pow(1 + (Number(taxaAnual) || 0) / 100, 1 / 12) - 1
     return calcularSAC({
       principal: Number(principal) || 0,
       taxaMensal: taxaMensalDecimal,
@@ -35,19 +35,22 @@ export default function FinancingSACCalculator() {
   ]
 
   return (
-    <div className="w-full max-w-7xl mx-auto space-y-8 p-4 md:p-6 lg:p-8">
+    <div className="w-full mx-auto space-y-8 p-4 md:p-6 lg:p-8" style={{ maxWidth: '980px' }}>
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 md:gap-8">
+        {/* Formulário */}
         <div className="lg:col-span-5 space-y-6">
-          <div className="space-y-2 px-1">
-            <h2 className="text-2xl md:text-3xl font-bold text-slate-900">Financiamento Imobiliário (SAC)</h2>
-            <p className="text-sm md:text-base text-slate-600">
+          <div className="space-y-2">
+            <h2 className="text-2xl md:text-3xl font-semibold" style={{ color: '#1d1d1f', letterSpacing: '-0.02em' }}>
+              Financiamento Imobiliário (SAC)
+            </h2>
+            <p className="text-sm md:text-base" style={{ color: '#6e6e73' }}>
               Simule financiamento com parcelas decrescentes no Sistema de Amortização Constante (SAC).
             </p>
           </div>
 
           <Card>
             <CardHeader>
-              <CardTitle className="text-lg">Dados do Financiamento</CardTitle>
+              <CardTitle>Dados do Financiamento</CardTitle>
             </CardHeader>
             <CardContent className="space-y-4">
               <div>
@@ -79,34 +82,58 @@ export default function FinancingSACCalculator() {
           </Card>
         </div>
 
+        {/* Resultados */}
         <div className="lg:col-span-7 space-y-6">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4" role="status" aria-live="polite">
-            <Card className="bg-sky-50 border-sky-200">
-              <CardContent className="p-4">
-                <p className="text-xs text-sky-700 font-semibold uppercase tracking-wider">Primeira Parcela</p>
-                <p className="text-2xl font-bold text-sky-900 mt-1">{formatarMoeda(primeiraParcela)}</p>
-              </CardContent>
-            </Card>
-            <Card className="bg-emerald-50 border-emerald-200">
-              <CardContent className="p-4">
-                <p className="text-xs text-emerald-700 font-semibold uppercase tracking-wider">Última Parcela</p>
-                <p className="text-2xl font-bold text-emerald-900 mt-1">{formatarMoeda(ultimaParcela)}</p>
-              </CardContent>
-            </Card>
-            <Card className="bg-amber-50 border-amber-200">
-              <CardContent className="p-4">
-                <p className="text-xs text-amber-700 font-semibold uppercase tracking-wider">Total de Juros</p>
-                <p className="text-2xl font-bold text-amber-900 mt-1">{formatarMoeda(result.totalJuros)}</p>
-              </CardContent>
-            </Card>
+            {/* Primeira Parcela */}
+            <div
+              className="rounded-2xl p-4"
+              style={{ background: 'rgba(0,113,227,0.06)', border: '1px solid rgba(0,113,227,0.18)' }}
+            >
+              <p className="text-xs font-semibold uppercase tracking-wider" style={{ color: '#0071e3' }}>
+                Primeira Parcela
+              </p>
+              <p className="text-2xl font-semibold mt-1" style={{ color: '#1d1d1f', letterSpacing: '-0.02em' }}>
+                {formatarMoeda(primeiraParcela)}
+              </p>
+            </div>
+
+            {/* Última Parcela */}
+            <div
+              className="rounded-2xl p-4"
+              style={{ background: 'rgba(48,209,88,0.06)', border: '1px solid rgba(48,209,88,0.20)' }}
+            >
+              <p className="text-xs font-semibold uppercase tracking-wider" style={{ color: '#30d158' }}>
+                Última Parcela
+              </p>
+              <p className="text-2xl font-semibold mt-1" style={{ color: '#1d1d1f', letterSpacing: '-0.02em' }}>
+                {formatarMoeda(ultimaParcela)}
+              </p>
+            </div>
+
+            {/* Total de Juros */}
+            <div
+              className="rounded-2xl p-4"
+              style={{ background: 'rgba(255,214,10,0.08)', border: '1px solid rgba(255,214,10,0.30)' }}
+            >
+              <p className="text-xs font-semibold uppercase tracking-wider" style={{ color: '#b8860b' }}>
+                Total de Juros
+              </p>
+              <p className="text-2xl font-semibold mt-1" style={{ color: '#1d1d1f', letterSpacing: '-0.02em' }}>
+                {formatarMoeda(result.totalJuros)}
+              </p>
+            </div>
           </div>
 
           <Card>
             <CardHeader>
-              <CardTitle className="text-lg">Tabela de Amortização (Amostra)</CardTitle>
+              <CardTitle>Tabela de Amortização (Amostra)</CardTitle>
             </CardHeader>
             <CardContent>
-              <Table columns={tableColumns} data={result.parcelas.filter((_, i) => i === 0 || i % 12 === 0 || i === result.parcelas.length - 1)} />
+              <Table
+                columns={tableColumns}
+                data={result.parcelas.filter((_, i) => i === 0 || i % 12 === 0 || i === result.parcelas.length - 1)}
+              />
             </CardContent>
           </Card>
         </div>

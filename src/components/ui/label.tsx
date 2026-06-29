@@ -11,6 +11,7 @@ const Label = React.forwardRef<
       "text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70",
       className
     )}
+    style={{ color: '#1d1d1f', ...(props as any).style }}
     {...props}
   />
 ))
