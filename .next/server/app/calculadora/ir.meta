@@ -1,0 +1,16 @@
+{
+  "headers": {
+    "x-nextjs-stale-time": "300",
+    "x-nextjs-prerender": "1",
+    "x-next-cache-tags": "_N_T_/layout,_N_T_/calculadora/layout,_N_T_/calculadora/ir/layout,_N_T_/calculadora/ir/page,_N_T_/calculadora/ir"
+  },
+  "segmentPaths": [
+    "/_tree",
+    "/_full",
+    "/calculadora/ir/__PAGE__",
+    "/calculadora/ir",
+    "/calculadora",
+    "/_index",
+    "/_head"
+  ]
+}
