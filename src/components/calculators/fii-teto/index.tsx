@@ -134,7 +134,7 @@ export default function FIITetoPriceCalculator() {
               </div>
               <div className="flex justify-between py-2 border-b text-sm">
                 <span className="text-slate-600">Taxa NTN-B de Referência:</span>
-                <span className="font-semibold text-slate-900">{result.ntnbAverage.toFixed(2)}% a.a.</span>
+                <span className="font-semibold text-slate-900">{Number(ntnbAverage).toFixed(2)}% a.a.</span>
               </div>
               <div className="flex justify-between py-2 text-sm">
                 <span className="text-slate-600">Prêmio de Risco (Tipo):</span>

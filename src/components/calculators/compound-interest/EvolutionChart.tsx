@@ -87,7 +87,7 @@ export default function EvolutionChart({ data }: EvolutionChartProps) {
             
             {/* Tooltip Melhorado */}
             <Tooltip 
-              formatter={(value: number) => [formatCurrency(value), '']}
+              formatter={(value) => [formatCurrency(typeof value === 'number' ? value : 0), '']}
               contentStyle={{ 
                 borderRadius: '8px', 
                 border: '1px solid #e2e8f0',
@@ -105,7 +105,6 @@ export default function EvolutionChart({ data }: EvolutionChartProps) {
               align="right" 
               iconType="circle" 
               wrapperStyle={{ paddingBottom: '20px' }}
-              iconStyle={{ borderRadius: '50%' }}
             />
             
             {/* Área de Capital Investido */}

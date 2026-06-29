@@ -1,9 +1,9 @@
 import type { Metadata } from 'next';
-import { Inter } from 'next/font/google';
 import './globals.css';
 import { NuqsAdapter } from 'nuqs/adapters/next/app';
 
-const inter = Inter({ subsets: ['latin'] });
+// Inter é carregada em runtime via @import url() em globals.css
+// (next/font/google exige rede no build — incompatível com output: 'export' em CI sem acesso a fonts.googleapis.com)
 
 export const metadata: Metadata = {
   title: {
@@ -21,7 +21,8 @@ export default function RootLayout({
 }) {
   return (
     <html lang="pt-BR">
-      <body className={inter.className}>
+      {/* font-sans aplica var(--font-sans) = Inter, definida em @theme do globals.css */}
+      <body className="font-sans antialiased">
         <NuqsAdapter>
           <div className="min-h-screen flex flex-col bg-slate-50 text-slate-900">
             <header className="border-b bg-white sticky top-0 z-50">

@@ -24,7 +24,7 @@ export function useCalculatorForm() {
       // Validação em tempo real via Zod
       const result = CalculatorFormSchema.safeParse(next)
       if (!result.success) {
-        const fieldError = result.error.errors.find(e => e.path[0] === field)
+        const fieldError = result.error.issues.find(e => e.path[0] === field)
         setErrors(prevErrors => ({
           ...prevErrors,
           [field]: fieldError?.message

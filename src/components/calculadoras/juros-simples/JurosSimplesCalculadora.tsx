@@ -27,7 +27,7 @@ const BarChartComponent = dynamic(
             <Tooltip 
               cursor={{ fill: '#f8fafc' }}
               contentStyle={{ borderRadius: '8px', border: 'none', boxShadow: '0 4px 12px rgba(0,0,0,0.1)' }}
-              formatter={(value: number) => [formatCurrency(value), '']}
+              formatter={(value) => [formatCurrency(typeof value === 'number' ? value : 0), '']}
             />
             <Bar dataKey="value" radius={[4, 4, 0, 0]} barSize={60}>
               {data.map((entry, index) => (
