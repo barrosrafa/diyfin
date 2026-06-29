@@ -1,0 +1,18 @@
+{
+  "stocks": [
+    { "id": "1", "symbol": "TAEE11", "name": "Taesa", "price": 43.87, "changePercent": -1.24, "type": "stock", "dy": 8.2, "pe": 12.5, "marketCap": "R$ 45.2B" },
+    { "id": "2", "symbol": "ITUB4", "name": "Itaú Unibanco", "price": 48.24, "changePercent": -2.29, "type": "stock", "dy": 6.5, "pe": 8.2, "marketCap": "R$ 523.2B" },
+    { "id": "3", "symbol": "AMBV3", "name": "Ambev", "price": 10.45, "changePercent": 1.45, "type": "stock", "dy": 5.8, "pe": 15.3, "marketCap": "R$ 312.5B" },
+    { "id": "4", "symbol": "WEGE3", "name": "Weg", "price": 54.03, "changePercent": 0.82, "type": "stock", "dy": 3.2, "pe": 22.5, "marketCap": "R$ 187.3B" },
+    { "id": "5", "symbol": "PETR4", "name": "Petrobrás", "price": 37.11, "changePercent": -2.55, "type": "stock", "dy": 9.3, "pe": 6.5, "marketCap": "R$ 491.5B" }
+  ],
+  "fiis": [
+    { "id": "18", "symbol": "BCFF11", "name": "BC Fundos Imobiliários", "price": 98.45, "changePercent": -0.5, "type": "fii", "dy": 8.5, "marketCap": "R$ 2.3B" },
+    { "id": "19", "symbol": "RECR11", "name": "Recife Logística", "price": 125.32, "changePercent": 0.5, "type": "fii", "dy": 7.2, "marketCap": "R$ 1.8B" },
+    { "id": "20", "symbol": "HGLG11", "name": "Hotéis e Logística", "price": 87.65, "changePercent": -1.0, "type": "fii", "dy": 6.8, "marketCap": "R$ 3.2B" }
+  ],
+  "indices": [
+    { "symbol": "IBOV", "name": "Ibovespa", "value": 187766.42, "changePercent": -1.02 },
+    { "symbol": "IFIX", "name": "Índice de FIIs", "value": 3832.93, "changePercent": -0.1 }
+  ]
+}

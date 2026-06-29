@@ -7,10 +7,10 @@ const inter = Inter({ subsets: ['latin'] });
 
 export const metadata: Metadata = {
   title: {
-    default: 'diyfin.com.br | Calculadoras Financeiras 2026',
+    default: 'diyfin.com.br | Plataforma Financeira Unificada 2026',
     template: '%s | diyfin.com.br',
   },
-  description: 'Consolidação de ferramentas financeiras, calculadoras de juros, rescisão, IRRF e mais.',
+  description: 'Consolidação de ferramentas financeiras, calculadoras de juros, simulador de investimentos e cotações de mercado.',
   metadataBase: new URL('https://www.diyfin.com.br'),
 };
 
@@ -23,15 +23,19 @@ export default function RootLayout({
     <html lang="pt-BR">
       <body className={inter.className}>
         <NuqsAdapter>
-          <div className="min-h-screen flex flex-col bg-slate-50">
+          <div className="min-h-screen flex flex-col bg-slate-50 text-slate-900">
             <header className="border-b bg-white sticky top-0 z-50">
-              <div className="container mx-auto px-4 h-16 flex items-center justify-between">
-                <a href="/" className="text-xl font-bold text-sky-600">
-                  diyfin<span className="text-slate-900">.com.br</span>
+              <div className="container mx-auto px-4 h-16 flex items-center justify-between max-w-7xl">
+                <a href="/" className="text-xl font-bold text-sky-600 flex items-center gap-2">
+                  <span>diyfin</span><span className="text-slate-900">.com.br</span>
                 </a>
                 <nav className="hidden md:flex gap-6 text-sm font-medium">
-                  <a href="/calculadoras" className="hover:text-sky-600 transition-colors">Calculadoras</a>
-                  <a href="/sobre" className="hover:text-sky-600 transition-colors">Sobre</a>
+                  <a href="/calculadora/juros-compostos" className="hover:text-sky-600 transition-colors">Juros Compostos</a>
+                  <a href="/calculadora/financiamento-price" className="hover:text-sky-600 transition-colors">PRICE</a>
+                  <a href="/calculadora/financiamento-sac" className="hover:text-sky-600 transition-colors">SAC</a>
+                  <a href="/calculadora/preco-teto-fii" className="hover:text-sky-600 transition-colors">Preço Teto FII</a>
+                  <a href="/calculadora/primeiro-milhao" className="hover:text-sky-600 transition-colors">Primeiro Milhão</a>
+                  <a href="/investidor10" className="hover:text-sky-600 transition-colors font-semibold text-sky-600">Mercado</a>
                 </nav>
               </div>
             </header>
@@ -39,9 +43,9 @@ export default function RootLayout({
               {children}
             </main>
             <footer className="border-t bg-white py-8">
-              <div className="container mx-auto px-4 text-center text-sm text-slate-500">
-                <p>© 2026 diyfin.com.br - Ferramentas Financeiras DIY</p>
-                <p className="mt-2">As informações aqui contidas têm caráter meramente informativo.</p>
+              <div className="container mx-auto px-4 text-center text-sm text-slate-500 max-w-7xl">
+                <p>© 2026 diyfin.com.br - Plataforma Financeira Unificada</p>
+                <p className="mt-2 text-xs">Cálculos estritos com precisão Decimal.js sem arredondamentos flutuantes nativos.</p>
               </div>
             </footer>
           </div>

@@ -1,58 +1,76 @@
-import { Card, CardHeader, CardTitle, CardDescription, CardContent } from '@/components/ui/card';
-import { Calculator, TrendingUp, Briefcase, PiggyBank, Home, Percent } from 'lucide-react';
+export const dynamic = 'force-static';
+export const revalidate = false;
+export async function generateStaticParams() { return []; }
 
-const CALCULADORAS = [
-  {
-    title: 'Juros Simples',
-    description: 'Cálculo básico de juros sobre o capital inicial.',
-    href: '/calculadora/juros-simples',
-    icon: Percent,
-    category: 'Investimentos'
-  },
+import { Card, CardHeader, CardTitle, CardDescription, CardContent } from '@/components/ui/card';
+import { TrendingUp, Percent, Home, DollarSign, Target, BarChart3 } from 'lucide-react';
+
+const FERRAMENTAS = [
   {
     title: 'Juros Compostos',
-    description: 'O poder dos juros sobre juros no longo prazo.',
+    description: 'Simule o crescimento exponencial do seu patrimônio com aportes.',
     href: '/calculadora/juros-compostos',
     icon: TrendingUp,
-    category: 'Investimentos'
+    category: 'Investimentos',
   },
   {
-    title: 'Rescisão CLT',
-    description: 'Simule sua rescisão com tabelas 2026.',
-    href: '/calculadora/rescisao',
-    icon: Briefcase,
-    category: 'Trabalhista'
+    title: 'Juros Simples',
+    description: 'Cálculo direto sobre o capital inicial sem rendimentos acumulados.',
+    href: '/calculadora/juros-simples',
+    icon: Percent,
+    category: 'Investimentos',
   },
   {
-    title: 'Imposto de Renda',
-    description: 'Cálculo mensal de IRRF com novas regras.',
-    href: '/calculadora/ir',
-    icon: PiggyBank,
-    category: 'Impostos'
-  },
-  {
-    title: 'Financiamento',
-    description: 'Simulador SAC e PRICE para imóveis e veículos.',
-    href: '/calculadora/financiamento',
+    title: 'Financiamento PRICE',
+    description: 'Simule parcelas fixas do Sistema Francês de Amortização.',
+    href: '/calculadora/financiamento-price',
     icon: Home,
-    category: 'Crédito'
-  }
+    category: 'Crédito',
+  },
+  {
+    title: 'Financiamento SAC',
+    description: 'Simule amortizações constantes com prestações decrescentes.',
+    href: '/calculadora/financiamento-sac',
+    icon: DollarSign,
+    category: 'Crédito',
+  },
+  {
+    title: 'Preço Teto de FIIs',
+    description: 'Calcule o preço justo de compra baseado na taxa NTN-B.',
+    href: '/calculadora/preco-teto-fii',
+    icon: Target,
+    category: 'Renda Variável',
+  },
+  {
+    title: 'Primeiro Milhão',
+    description: 'Descubra a meta de aportes mensais para alcançar 1 milhão.',
+    href: '/calculadora/primeiro-milhao',
+    icon: DollarSign,
+    category: 'Planejamento',
+  },
+  {
+    title: 'Painel de Mercado',
+    description: 'Acompanhe cotações de ações, FIIs e índices financeiros.',
+    href: '/investidor10',
+    icon: BarChart3,
+    category: 'Dashboard',
+  },
 ];
 
 export default function HomePage() {
   return (
-    <div className="container mx-auto px-4 py-12">
+    <div className="container mx-auto px-4 py-12 max-w-7xl">
       <section className="text-center mb-16">
         <h1 className="text-4xl md:text-6xl font-extrabold tracking-tight text-slate-900 mb-4">
-          Finanças <span className="text-sky-600">DIY</span> ao seu alcance
+          Plataforma Financeira <span className="text-sky-600">Unificada</span>
         </h1>
         <p className="text-xl text-slate-600 max-w-2xl mx-auto">
-          Ferramentas técnicas consolidadas para você tomar as melhores decisões financeiras em 2026.
+          Cálculos financeiros com precisão decimal estrita, sem arredondamentos flutuantes e 100% otimizados.
         </p>
       </section>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {CALCULADORAS.map((calc) => (
+        {FERRAMENTAS.map((calc) => (
           <a key={calc.href} href={calc.href} className="group">
             <Card className="h-full transition-all hover:shadow-lg hover:-translate-y-1 border-slate-200">
               <CardHeader>

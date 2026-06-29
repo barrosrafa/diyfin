@@ -1,0 +1,115 @@
+'use client'
+
+import React, { useState, useMemo } from 'react'
+import { calcularPRICE, obterParcelasResumidas } from '@/lib/finance/price-engine'
+import { formatarMoeda, formatarPercentual } from '@/lib/finance/utils'
+import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card'
+import { Input } from '@/components/ui/input'
+import { Label } from '@/components/ui/label'
+import { Table } from '@/components/ui/table'
+
+export default function FinancingPriceCalculator() {
+  const [principal, setPrincipal] = useState(200000)
+  const [taxaAnual, setTaxaAnual] = useState(9.5)
+  const [prazoAnos, setPrazoAnos] = useState(30)
+
+  const result = useMemo(() => {
+    const prazoMeses = (Number(prazoAnos) || 0) * 12
+    const taxaMensalDecimal = (Math.pow(1 + (Number(taxaAnual) || 0) / 100, 1 / 12) - 1)
+    return calcularPRICE({
+      principal: Number(principal) || 0,
+      taxaMensal: taxaMensalDecimal,
+      prazoMeses,
+    })
+  }, [principal, taxaAnual, prazoAnos])
+
+  const resumidas = useMemo(() => obterParcelasResumidas(result.parcelas), [result.parcelas])
+
+  const tableColumns = [
+    { key: 'numero', label: 'Parcela' },
+    { key: 'prestacaoTotal', label: 'Prestação (PMT)', format: (v: number) => formatarMoeda(v) },
+    { key: 'amortizacao', label: 'Amortização', format: (v: number) => formatarMoeda(v) },
+    { key: 'juros', label: 'Juros', format: (v: number) => formatarMoeda(v) },
+    { key: 'saldoDevedor', label: 'Saldo Devedor', format: (v: number) => formatarMoeda(v) },
+  ]
+
+  return (
+    <div className="w-full max-w-7xl mx-auto space-y-8 p-4 md:p-6 lg:p-8">
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 md:gap-8">
+        <div className="lg:col-span-5 space-y-6">
+          <div className="space-y-2 px-1">
+            <h2 className="text-2xl md:text-3xl font-bold text-slate-900">Financiamento Imobiliário (PRICE)</h2>
+            <p className="text-sm md:text-base text-slate-600">
+              Simule financiamento com parcelas fixas no Sistema Francês de Amortização (PRICE).
+            </p>
+          </div>
+
+          <Card>
+            <CardHeader>
+              <CardTitle className="text-lg">Dados do Financiamento</CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <div>
+                <Label>Valor Financiado (R$)</Label>
+                <Input
+                  type="number"
+                  value={principal}
+                  onChange={(e) => setPrincipal(Number(e.target.value))}
+                />
+              </div>
+              <div>
+                <Label>Taxa de Juros Anual (%)</Label>
+                <Input
+                  type="number"
+                  step="0.1"
+                  value={taxaAnual}
+                  onChange={(e) => setTaxaAnual(Number(e.target.value))}
+                />
+              </div>
+              <div>
+                <Label>Prazo do Financiamento (Anos)</Label>
+                <Input
+                  type="number"
+                  value={prazoAnos}
+                  onChange={(e) => setPrazoAnos(Number(e.target.value))}
+                />
+              </div>
+            </CardContent>
+          </Card>
+        </div>
+
+        <div className="lg:col-span-7 space-y-6">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4" role="status" aria-live="polite">
+            <Card className="bg-sky-50 border-sky-200">
+              <CardContent className="p-4">
+                <p className="text-xs text-sky-700 font-semibold uppercase tracking-wider">Prestação Fixa</p>
+                <p className="text-2xl font-bold text-sky-900 mt-1">{formatarMoeda(result.prestacaoConstante || 0)}</p>
+              </CardContent>
+            </Card>
+            <Card className="bg-amber-50 border-amber-200">
+              <CardContent className="p-4">
+                <p className="text-xs text-amber-700 font-semibold uppercase tracking-wider">Total em Juros</p>
+                <p className="text-2xl font-bold text-amber-900 mt-1">{formatarMoeda(result.totalJuros)}</p>
+              </CardContent>
+            </Card>
+            <Card className="bg-slate-900 text-white border-slate-800">
+              <CardContent className="p-4">
+                <p className="text-xs text-slate-400 font-semibold uppercase tracking-wider">Custo Total Pago</p>
+                <p className="text-2xl font-bold text-sky-400 mt-1">{formatarMoeda(result.totalAmortizacao + result.totalJuros)}</p>
+              </CardContent>
+            </Card>
+          </div>
+
+          <Card>
+            <CardHeader>
+              <CardTitle className="text-lg">Tabela de Parcelas (Resumo)</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <Table columns={tableColumns} data={resumidas} />
+            </CardContent>
+          </Card>
+        </div>
+      </div>
+    </div>
+  )
+}

@@ -1,13 +1,11 @@
-/**
- * Motor de cálculo de juros compostos.
- * Segue os princípios SOLID (SRP) sendo uma função pura e testável.
- */
+import Decimal from 'decimal.js'
+import { taxaAnualParaMensal } from '../finance/utils'
 
 export interface CalculatorInput {
-  capitalInicial: number      // R$ — mínimo 0
-  aporteMensal: number        // R$ — mínimo 0
-  taxaMensal: number          // decimal — ex: 0.01 para 1%
-  totalMeses: number          // inteiro — 1 a 600
+  capitalInicial: number
+  aporteMensal: number
+  taxaMensal: number
+  totalMeses: number
 }
 
 export interface MonthlyRow {
@@ -27,55 +25,49 @@ export interface CalculatorResult {
   schedule: MonthlyRow[]
 }
 
-/**
- * Calcula a evolução mensal de um investimento com juros compostos e aportes.
- * VF = [C × (1 + i)^n] + [PMT × (((1 + i)^n - 1) / i)]
- */
 export function calculateMonthlySchedule(input: CalculatorInput): CalculatorResult {
   const { capitalInicial, aporteMensal, taxaMensal, totalMeses } = input
-  
-  let saldo = capitalInicial
+
+  const initialDecimal = new Decimal(capitalInicial)
+  const aporteDecimal = new Decimal(aporteMensal)
+  const rateDecimal = new Decimal(taxaMensal)
+
+  let saldo = initialDecimal
   const schedule: MonthlyRow[] = []
-  
+
   for (let mes = 1; mes <= totalMeses; mes++) {
     const saldoInicial = saldo
-    const jurosMes = taxaMensal > 0 ? saldo * taxaMensal : 0
-    
-    // O aporte ocorre no final do período conforme o blueprint
-    saldo = saldoInicial + jurosMes + aporteMensal
-    
-    const totalInvestido = capitalInicial + (aporteMensal * mes)
-    const totalJuros = saldo - totalInvestido
-    
+    const jurosMes = rateDecimal.greaterThan(0) ? saldo.mul(rateDecimal) : new Decimal(0)
+    saldo = saldoInicial.add(jurosMes).add(aporteDecimal)
+
+    const totalInvestidoDecimal = initialDecimal.add(aporteDecimal.mul(mes))
+    const totalJurosDecimal = saldo.sub(totalInvestidoDecimal)
+
     schedule.push({
       mes,
-      saldoInicial,
+      saldoInicial: saldoInicial.toNumber(),
       aporte: aporteMensal,
-      jurosMes,
-      saldoFinal: saldo,
-      totalInvestido,
-      totalJuros
+      jurosMes: jurosMes.toNumber(),
+      saldoFinal: saldo.toNumber(),
+      totalInvestido: totalInvestidoDecimal.toNumber(),
+      totalJuros: totalJurosDecimal.toNumber(),
     })
   }
-  
+
   const lastRow = schedule[schedule.length - 1] || {
     saldoFinal: capitalInicial,
     totalInvestido: capitalInicial,
-    totalJuros: 0
+    totalJuros: 0,
   }
-  
+
   return {
     montanteFinal: lastRow.saldoFinal,
     totalInvestido: lastRow.totalInvestido,
     totalJuros: lastRow.totalJuros,
-    schedule
+    schedule,
   }
 }
 
-/**
- * Converte taxa anual para mensal (juros compostos)
- * i_mensal = (1 + i_anual)^(1/12) - 1
- */
-export function convertAnnualToMonthlyRate(annualRate: number): number {
-  return Math.pow(1 + annualRate, 1 / 12) - 1
+export function convertAnnualToMonthlyRate(annualRateDecimal: number): number {
+  return taxaAnualParaMensal(annualRateDecimal * 100) / 100
 }

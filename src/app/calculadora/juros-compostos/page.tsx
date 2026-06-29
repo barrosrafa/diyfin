@@ -1,3 +1,7 @@
+export const dynamic = 'force-static';
+export const revalidate = false;
+export async function generateStaticParams() { return []; }
+
 import type { Metadata } from 'next';
 import { Suspense } from 'react';
 import CompoundInterestCalculator from '@/components/calculators/compound-interest';
