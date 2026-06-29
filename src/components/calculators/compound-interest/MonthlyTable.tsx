@@ -2,18 +2,18 @@
 
 import React, { useRef } from 'react'
 import { useVirtualizer } from '@tanstack/react-virtual'
-import { MonthlyRow } from '@/lib/calculators/compound-interest'
+import { CompoundInterestRow } from '@/lib/finance/types'
 import { Table } from 'lucide-react'
 
 interface MonthlyTableProps {
-  schedule: MonthlyRow[]
+  rows: CompoundInterestRow[]
 }
 
-export function MonthlyTable({ schedule }: MonthlyTableProps) {
+export function MonthlyTable({ rows }: MonthlyTableProps) {
   const parentRef = useRef<HTMLDivElement>(null)
 
   const rowVirtualizer = useVirtualizer({
-    count: schedule.length,
+    count: rows.length,
     getScrollElement: () => parentRef.current,
     estimateSize: () => 48,
     overscan: 10,
@@ -78,7 +78,7 @@ export function MonthlyTable({ schedule }: MonthlyTableProps) {
             </thead>
             <tbody>
               {rowVirtualizer.getVirtualItems().map((virtualRow) => {
-                const row = schedule[virtualRow.index]
+                const row = rows[virtualRow.index]
                 const isEven = virtualRow.index % 2 === 0
                 return (
                   <tr
@@ -95,22 +95,22 @@ export function MonthlyTable({ schedule }: MonthlyTableProps) {
                     }}
                   >
                     <td className="px-4 md:px-6 py-3 text-sm font-semibold whitespace-nowrap" style={{ color: '#1d1d1f' }}>
-                      {row.mes}
+                      {row.period}
                     </td>
                     <td className="px-4 md:px-6 py-3 text-sm hidden sm:table-cell" style={{ color: '#6e6e73' }}>
-                      {formatCurrency(row.saldoInicial)}
+                      {formatCurrency(row.accumulated - row.monthlyInterest)}
                     </td>
                     <td className="px-4 md:px-6 py-3 text-sm" style={{ color: '#6e6e73' }}>
-                      {formatCurrency(row.aporte)}
+                      {formatCurrency(row.totalInvested)} 
                     </td>
                     <td className="px-4 md:px-6 py-3 text-sm font-medium hidden md:table-cell" style={{ color: '#30d158' }}>
                       <span className="inline-flex items-center gap-1">
                         <span>+</span>
-                        {formatCurrency(row.jurosMes)}
+                        {formatCurrency(row.monthlyInterest)}
                       </span>
                     </td>
                     <td className="px-4 md:px-6 py-3 text-sm font-semibold whitespace-nowrap" style={{ color: '#0071e3' }}>
-                      {formatCurrency(row.saldoFinal)}
+                      {formatCurrency(row.accumulated)}
                     </td>
                   </tr>
                 )
@@ -127,7 +127,7 @@ export function MonthlyTable({ schedule }: MonthlyTableProps) {
       >
         <p className="text-xs" style={{ color: '#6e6e73' }}>
           <span style={{ color: '#1d1d1f', fontWeight: 600 }}>Total de períodos:</span>{' '}
-          {schedule.length} {schedule.length === 1 ? 'mês' : 'meses'}
+          {rows.length} {rows.length === 1 ? 'mês' : 'meses'}
         </p>
       </div>
     </div>

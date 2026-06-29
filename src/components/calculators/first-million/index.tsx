@@ -2,7 +2,7 @@
 
 import React, { useState, useMemo } from 'react'
 import { calculateFirstMillion } from '@/lib/finance/first-million'
-import { formatarMoeda } from '@/lib/finance/utils'
+import { formatCurrency } from '@/lib/finance/utils'
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
@@ -30,10 +30,10 @@ export default function FirstMillionCalculator() {
 
   const tableColumns = [
     { key: 'period', label: 'Mês' },
-    { key: 'monthlyContribution', label: 'Aporte Mensal', format: (v: number) => formatarMoeda(v) },
-    { key: 'accumulatedInvested', label: 'Total Investido', format: (v: number) => formatarMoeda(v) },
-    { key: 'accumulatedInterest', label: 'Juros Acumulados', format: (v: number) => formatarMoeda(v) },
-    { key: 'balance', label: 'Patrimônio Total', format: (v: number) => formatarMoeda(v) },
+    { key: 'monthlyContribution', label: 'Aporte Mensal', format: (v: number) => formatCurrency(v) },
+    { key: 'accumulatedInvested', label: 'Total Investido', format: (v: number) => formatCurrency(v) },
+    { key: 'accumulatedInterest', label: 'Juros Acumulados', format: (v: number) => formatCurrency(v) },
+    { key: 'balance', label: 'Patrimônio Total', format: (v: number) => formatCurrency(v) },
   ]
 
   return (
@@ -130,7 +130,7 @@ export default function FirstMillionCalculator() {
                 Aporte Mensal Necessário
               </p>
               <p className="text-2xl font-semibold mt-1" style={{ color: '#1d1d1f', letterSpacing: '-0.02em' }}>
-                {formatarMoeda(result.requiredMonthlyContribution)}
+                {formatCurrency(result.requiredMonthlyContribution)}
               </p>
             </div>
 
@@ -143,7 +143,7 @@ export default function FirstMillionCalculator() {
                 Total Investido do Bolso
               </p>
               <p className="text-2xl font-semibold mt-1" style={{ color: '#1d1d1f', letterSpacing: '-0.02em' }}>
-                {formatarMoeda(result.totalInvested)}
+                {formatCurrency(result.totalInvested)}
               </p>
             </div>
 
@@ -156,7 +156,7 @@ export default function FirstMillionCalculator() {
                 Ganho em Juros
               </p>
               <p className="text-2xl font-semibold mt-1" style={{ color: '#1d1d1f', letterSpacing: '-0.02em' }}>
-                {formatarMoeda(result.totalInterest)}
+                {formatCurrency(result.totalInterest)}
               </p>
             </div>
           </div>

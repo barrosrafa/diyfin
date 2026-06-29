@@ -1,20 +1,20 @@
 import { describe, it, expect } from 'vitest'
 import { calculateCompoundInterest } from '../lib/finance/compound-interest'
 import { calculateSimpleInterest } from '../lib/finance/simple-interest'
-import { calcularPRICE } from '../lib/finance/price-engine'
-import { calcularSAC } from '../lib/finance/sac-engine'
+import { calculatePRICE } from '../lib/finance/price-engine'
+import { calculateSAC } from '../lib/finance/sac-engine'
 import { calculateFIITetoPrice } from '../lib/finance/fii-teto'
 import { calculateFirstMillion } from '../lib/finance/first-million'
-import { taxaAnualParaMensal, validarCPF } from '../lib/finance/utils'
+import { annualToMonthlyRate, validateCPF } from '../lib/finance/utils'
 
 describe('Motor Financeiro Unificado (Decimal.js)', () => {
   it('deve validar CPF corretamente com MOD11', () => {
-    expect(validarCPF('00000000000')).toBe(false)
-    expect(validarCPF('11111111111')).toBe(false)
+    expect(validateCPF('00000000000')).toBe(false)
+    expect(validateCPF('11111111111')).toBe(false)
   })
 
   it('deve converter taxa anual para mensal com precisão contínua', () => {
-    const taxaMensal = taxaAnualParaMensal(12)
+    const taxaMensal = annualToMonthlyRate(12)
     expect(taxaMensal).toBeGreaterThan(0.9)
     expect(taxaMensal).toBeLessThan(1.0)
   })
@@ -45,23 +45,23 @@ describe('Motor Financeiro Unificado (Decimal.js)', () => {
   })
 
   it('deve calcular parcelas PRICE com prestação constante', () => {
-    const output = calcularPRICE({
+    const output = calculatePRICE({
       principal: 100000,
-      taxaMensal: 0.01,
-      prazoMeses: 120,
+      monthlyRate: 0.01,
+      months: 120,
     })
-    expect(output.parcelas.length).toBe(120)
-    expect(output.prestacaoConstante).toBeGreaterThan(0)
+    expect(output.installments.length).toBe(120)
+    expect(output.constantPayment).toBeGreaterThan(0)
   })
 
   it('deve calcular parcelas SAC com amortização constante', () => {
-    const output = calcularSAC({
+    const output = calculateSAC({
       principal: 120000,
-      taxaMensal: 0.01,
-      prazoMeses: 120,
+      monthlyRate: 0.01,
+      months: 120,
     })
-    expect(output.parcelas.length).toBe(120)
-    expect(output.parcelas[0].amortizacao).toBe(1000)
+    expect(output.installments.length).toBe(120)
+    expect(output.installments[0].amortization).toBe(1000)
   })
 
   it('deve calcular preço teto de FII', () => {

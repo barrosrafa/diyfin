@@ -95,8 +95,8 @@ export function CalculatorForm({ values, errors, onChange }: CalculatorFormProps
         {/* Valor Inicial + Aporte */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
           {[
-            { id: 'capitalInicial', label: 'Valor Inicial', suffix: '(R$)', mask: CURRENCY_MASK, field: 'capitalInicial' as const },
-            { id: 'aporteMensal', label: 'Aporte Mensal', suffix: '(R$)', mask: CURRENCY_MASK, field: 'aporteMensal' as const },
+            { id: 'initialValue', label: 'Valor Inicial', suffix: '(R$)', mask: CURRENCY_MASK, field: 'initialValue' as const },
+            { id: 'monthlyContribution', label: 'Aporte Mensal', suffix: '(R$)', mask: CURRENCY_MASK, field: 'monthlyContribution' as const },
           ].map(({ id, label, suffix, mask, field }) => (
             <div key={id} className="space-y-2">
               <Label htmlFor={id}>
@@ -130,56 +130,56 @@ export function CalculatorForm({ values, errors, onChange }: CalculatorFormProps
         {/* Taxa de Juros */}
         <div className="space-y-2">
           <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-3">
-            <Label htmlFor="taxaInput">
+            <Label htmlFor="rate">
               Taxa de Juros{' '}
               <span style={{ color: '#86868b', fontWeight: 400 }}>(%)</span>
             </Label>
             <ToggleGroup
-              options={[{ label: 'Mensal', value: 'mensal' }, { label: 'Anual', value: 'anual' }]}
-              value={values.taxaBase}
-              onChange={(v) => onChange('taxaBase', v)}
+              options={[{ label: 'Mensal', value: 'monthly' }, { label: 'Anual', value: 'annual' }]}
+              value={values.rateType}
+              onChange={(v) => onChange('rateType', v)}
             />
           </div>
           <IMaskInput
-            id="taxaInput"
+            id="rate"
             {...PERCENT_MASK}
-            value={values.taxaInput.toString()}
+            value={values.rate.toString()}
             unmask={true}
-            onAccept={(value) => onChange('taxaInput', Number(value))}
+            onAccept={(value) => onChange('rate', Number(value))}
             placeholder="0,00"
             className={appleInputClass}
             style={{
               ...appleInputStyle,
-              borderColor: errors.taxaInput ? '#ff3b30' : '#d2d2d7',
+              borderColor: errors.rate ? '#ff3b30' : '#d2d2d7',
             }}
             onFocus={handleFocus}
             onBlur={handleBlur}
           />
-          {errors.taxaInput && (
-            <p className="text-xs font-medium" style={{ color: '#ff3b30' }}>{errors.taxaInput}</p>
+          {errors.rate && (
+            <p className="text-xs font-medium" style={{ color: '#ff3b30' }}>{errors.rate}</p>
           )}
         </div>
 
         {/* Período */}
         <div className="space-y-2">
           <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-3">
-            <Label htmlFor="periodoInput">Período</Label>
+            <Label htmlFor="period">Período</Label>
             <ToggleGroup
-              options={[{ label: 'Meses', value: 'meses' }, { label: 'Anos', value: 'anos' }]}
-              value={values.periodoUnidade}
-              onChange={(v) => onChange('periodoUnidade', v)}
+              options={[{ label: 'Meses', value: 'months' }, { label: 'Anos', value: 'years' }]}
+              value={values.periodType}
+              onChange={(v) => onChange('periodType', v)}
             />
           </div>
           <Input
-            id="periodoInput"
+            id="period"
             type="number"
-            value={values.periodoInput}
-            onChange={(e) => onChange('periodoInput', Number(e.target.value))}
+            value={values.period}
+            onChange={(e) => onChange('period', Number(e.target.value))}
             placeholder="0"
-            style={errors.periodoInput ? { borderColor: '#ff3b30' } : {}}
+            style={errors.period ? { borderColor: '#ff3b30' } : {}}
           />
-          {errors.periodoInput && (
-            <p className="text-xs font-medium" style={{ color: '#ff3b30' }}>{errors.periodoInput}</p>
+          {errors.period && (
+            <p className="text-xs font-medium" style={{ color: '#ff3b30' }}>{errors.period}</p>
           )}
         </div>
       </div>

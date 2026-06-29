@@ -4,16 +4,16 @@ import React from 'react'
 import { TrendingUp, Wallet, PieChart } from 'lucide-react'
 
 interface ResultPanelProps {
-  montanteFinal: number
-  totalInvestido: number
-  totalJuros: number
+  totalAmount: number
+  totalInvested: number
+  totalInterest: number
 }
 
-export function ResultPanel({ montanteFinal, totalInvestido, totalJuros }: ResultPanelProps) {
+export function ResultPanel({ totalAmount, totalInvested, totalInterest }: ResultPanelProps) {
   const formatCurrency = (value: number) =>
     new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(value)
 
-  const jurosPercent = montanteFinal > 0 ? (totalJuros / montanteFinal) * 100 : 0
+  const jurosPercent = totalAmount > 0 ? (totalInterest / totalAmount) * 100 : 0
 
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-5">
@@ -42,7 +42,7 @@ export function ResultPanel({ montanteFinal, totalInvestido, totalJuros }: Resul
           role="status"
           aria-live="polite"
         >
-          {formatCurrency(montanteFinal)}
+          {formatCurrency(totalAmount)}
         </div>
         <p className="text-xs mt-1" style={{ color: '#6e6e73' }}>
           Seu patrimônio total após o período
@@ -68,7 +68,7 @@ export function ResultPanel({ montanteFinal, totalInvestido, totalJuros }: Resul
           role="status"
           aria-live="polite"
         >
-          {formatCurrency(totalInvestido)}
+          {formatCurrency(totalInvested)}
         </div>
         <p className="text-xs mt-1" style={{ color: '#86868b' }}>
           Valor que você aplicou
@@ -97,7 +97,7 @@ export function ResultPanel({ montanteFinal, totalInvestido, totalJuros }: Resul
           role="status"
           aria-live="polite"
         >
-          {formatCurrency(totalJuros)}
+          {formatCurrency(totalInterest)}
         </div>
 
         {/* Progress bar */}

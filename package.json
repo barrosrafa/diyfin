@@ -6,7 +6,6 @@
   "scripts": {
     "dev": "next dev -p 3000",
     "build": "next build",
-    "start": "next start -p 3000",
     "lint": "next lint"
   },
   "dependencies": {
@@ -29,8 +28,11 @@
     "@types/node": "^22.14.0",
     "@types/react": "^19.2.17",
     "@types/react-dom": "^19.2.3",
+    "depcheck": "^1.4.7",
     "jsdom": "29.1.1",
+    "knip": "^6.23.0",
     "tailwindcss": "4.3.2",
+    "ts-prune": "^0.10.3",
     "tsx": "4.22.4",
     "typescript": "6.0.3",
     "vitest": "4.1.9"

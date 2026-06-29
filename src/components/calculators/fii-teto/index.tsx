@@ -2,7 +2,7 @@
 
 import React, { useState, useMemo } from 'react'
 import { calculateFIITetoPrice } from '@/lib/finance/fii-teto'
-import { formatarMoeda } from '@/lib/finance/utils'
+import { formatCurrency } from '@/lib/finance/utils'
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
@@ -110,7 +110,7 @@ export default function FIITetoPriceCalculator() {
                 Preço Teto Calculado
               </p>
               <p className="text-3xl font-semibold mt-2" style={{ color: '#1d1d1f', letterSpacing: '-0.02em' }}>
-                {formatarMoeda(result.tetoPrice)}
+                {formatCurrency(result.tetoPrice)}
               </p>
               <p className="text-xs mt-2" style={{ color: '#6e6e73' }}>
                 Yield Alvo: {result.targetYield.toFixed(2)}% a.a.

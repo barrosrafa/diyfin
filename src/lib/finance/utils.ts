@@ -1,105 +1,105 @@
 import Decimal from 'decimal.js'
 
 /**
- * Utilitários para validação e cálculos financeiros estritos com Decimal.js
+ * Utility functions for strict financial validation and calculation using Decimal.js
  */
 
-export function validarCPF(cpf: string): boolean {
+export function validateCPF(cpf: string): boolean {
   const digits = cpf.replace(/\D/g, '')
   if (digits.length !== 11) return false
   if (/^(\d)\1{10}$/.test(digits)) return false
 
-  let soma = 0
+  let sum = 0
   for (let i = 0; i < 9; i++) {
-    soma += parseInt(digits[i], 10) * (10 - i)
+    sum += parseInt(digits[i], 10) * (10 - i)
   }
-  let resto = soma % 11
-  const digito1 = resto < 2 ? 0 : 11 - resto
+  let remainder = sum % 11
+  const digit1 = remainder < 2 ? 0 : 11 - remainder
 
-  soma = 0
+  sum = 0
   for (let i = 0; i < 10; i++) {
-    soma += parseInt(digits[i], 10) * (11 - i)
+    sum += parseInt(digits[i], 10) * (11 - i)
   }
-  resto = soma % 11
-  const digito2 = resto < 2 ? 0 : 11 - resto
+  remainder = sum % 11
+  const digit2 = remainder < 2 ? 0 : 11 - remainder
 
-  return digito1 === parseInt(digits[9], 10) && digito2 === parseInt(digits[10], 10)
+  return digit1 === parseInt(digits[9], 10) && digit2 === parseInt(digits[10], 10)
 }
 
-export function taxaAnualParaMensal(taxaAnualPercentual: number): number {
-  const taxa = new Decimal(taxaAnualPercentual)
-  const fator = taxa.div(100).add(1).pow(new Decimal(1).div(12))
-  const taxaMensal = fator.sub(1).mul(100)
-  return taxaMensal.toNumber()
+export function annualToMonthlyRate(annualRatePercentage: number): number {
+  const rate = new Decimal(annualRatePercentage)
+  const factor = rate.div(100).add(1).pow(new Decimal(1).div(12))
+  const monthlyRate = factor.sub(1).mul(100)
+  return monthlyRate.toNumber()
 }
 
-export function taxaMensalParaAnual(taxaMensalPercentual: number): number {
-  const taxa = new Decimal(taxaMensalPercentual)
-  const fator = taxa.div(100).add(1).pow(12)
-  const taxaAnual = fator.sub(1).mul(100)
-  return taxaAnual.toNumber()
+export function monthlyToAnnualRate(monthlyRatePercentage: number): number {
+  const rate = new Decimal(monthlyRatePercentage)
+  const factor = rate.div(100).add(1).pow(12)
+  const annualRate = factor.sub(1).mul(100)
+  return annualRate.toNumber()
 }
 
-export function verificarCapacidadePagamento(
-  rendaBrutaMensal: number,
-  prestacao: number
-): { elegivel: boolean; motivo?: string } {
-  const capacidadeMaxima = new Decimal(rendaBrutaMensal).mul(0.3)
-  const prestacaoDecimal = new Decimal(prestacao)
+export function verifyPaymentCapacity(
+  grossMonthlyIncome: number,
+  installmentValue: number
+): { eligible: boolean; reason?: string } {
+  const maxCapacity = new Decimal(grossMonthlyIncome).mul(0.3)
+  const installmentDecimal = new Decimal(installmentValue)
 
-  if (prestacaoDecimal.lessThanOrEqualTo(capacidadeMaxima)) {
-    return { elegivel: true }
+  if (installmentDecimal.lessThanOrEqualTo(maxCapacity)) {
+    return { eligible: true }
   }
 
-  const percentualComprometimento = prestacaoDecimal
-    .div(rendaBrutaMensal)
+  const commitmentPercentage = installmentDecimal
+    .div(grossMonthlyIncome)
     .mul(100)
     .toNumber()
 
   return {
-    elegivel: false,
-    motivo: `Prestação compromete ${percentualComprometimento.toFixed(1)}% da renda (máximo permitido: 30%)`,
+    eligible: false,
+    reason: `Installment commits ${commitmentPercentage.toFixed(1)}% of income (maximum allowed: 30%)`,
   }
 }
 
-export function formatarMoeda(valor: number): string {
+export function formatCurrency(value: number): string {
   return new Intl.NumberFormat('pt-BR', {
     style: 'currency',
     currency: 'BRL',
-  }).format(valor)
+  }).format(value)
 }
 
-export function formatarPercentual(valor: number, casasDecimais = 2): string {
-  return `${(valor * 100).toFixed(casasDecimais)}%`
+export function formatPercentage(value: number, decimals = 2): string {
+  return `${(value * 100).toFixed(decimals)}%`
 }
 
-export function calcularCET(
-  valorFinanciado: number,
-  totalJuros: number,
-  totalSeguros: number
+export function calculateCET(
+  financedAmount: number,
+  totalInterest: number,
+  totalInsurance: number
 ): number {
-  const cet = new Decimal(valorFinanciado).add(totalJuros).add(totalSeguros)
+  const cet = new Decimal(financedAmount).add(totalInterest).add(totalInsurance)
   return cet.toNumber()
 }
 
-export function calcularCETAnualizado(
+export function calculateAnnualizedCET(
   cet: number,
-  valorFinanciado: number,
-  prazoMeses: number
+  financedAmount: number,
+  months: number
 ): number {
   const cetDecimal = new Decimal(cet)
-  const vfDecimal = new Decimal(valorFinanciado)
-  const taxa = cetDecimal.div(vfDecimal)
-  const prazoAnos = new Decimal(prazoMeses).div(12)
-  const cetAnualizado = taxa.div(prazoAnos).mul(100)
-  return cetAnualizado.toNumber()
+  const vfDecimal = new Decimal(financedAmount)
+  const rate = cetDecimal.div(vfDecimal)
+  const years = new Decimal(months).div(12)
+  const annualizedCET = rate.div(years).mul(100)
+  return annualizedCET.toNumber()
 }
 
-export const TABELA_TAXAS = {
-  MCMV_FAIXA1: { base: 4.5, comRelacionamento: 4.25 },
-  MCMV_FAIXA2: { base: 5.0, comRelacionamento: 4.75 },
-  MCMV_FAIXA3: { base: 5.5, comRelacionamento: 5.25 },
-  SFH: { base: 6.5, comRelacionamento: 6.0 },
-  SFI: { base: 8.0, comRelacionamento: 7.5 },
-  EGI: { base: 7.0, comRelacionamento: 6.5 },
+export const RATE_TABLE = {
+  MCMV_BAND1: { base: 4.5, withRelationship: 4.25 },
+  MCMV_BAND2: { base: 5.0, withRelationship: 4.75 },
+  MCMV_BAND3: { base: 5.5, withRelationship: 5.25 },
+  SFH: { base: 6.5, withRelationship: 6.0 },
+  SFI: { base: 8.0, withRelationship: 7.5 },
+  EGI: { base: 7.0, withRelationship: 6.5 },
 } as const

@@ -86,26 +86,26 @@ export interface FirstMillionResult {
   rows: FirstMillionRow[]
 }
 
-export interface Parcela {
-  numero: number
-  dataVencimento: string
-  saldoDevedor: number
-  amortizacao: number
-  juros: number
+export interface FinancingInstallment {
+  month: number
+  dueDate: string
+  balance: number
+  amortization: number
+  interest: number
   mip: number
   dfi: number
-  prestacaoTotal: number
+  totalPayment: number
 }
 
-export interface FinanciamentoInput {
+export interface FinancingInput {
   principal: number
-  taxaMensal: number
-  prazoMeses: number
+  monthlyRate: number
+  months: number
 }
 
-export interface FinanciamentoOutput {
-  parcelas: Parcela[]
-  totalJuros: number
-  totalAmortizacao: number
-  prestacaoConstante?: number
+export interface FinancingOutput {
+  installments: FinancingInstallment[]
+  totalInterest: number
+  totalAmortization: number
+  constantPayment?: number
 }

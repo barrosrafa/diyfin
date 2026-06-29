@@ -5,7 +5,7 @@ export async function generateStaticParams() { return []; }
 import type { Metadata } from 'next';
 import { Suspense } from 'react';
 import CompoundInterestCalculator from '@/components/calculators/compound-interest';
-import { CalculatorContent } from '@/components/calculadoras/shared/CalculatorContent';
+import { CalculatorContent } from '@/components/calculators/shared/CalculatorContent';
 
 export const metadata: Metadata = {
   title: 'Calculadora de Juros Compostos 2026 | diyfin.com.br',

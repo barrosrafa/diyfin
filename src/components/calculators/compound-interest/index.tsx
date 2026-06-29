@@ -26,7 +26,7 @@ const EvolutionChart = dynamic(
 
 export default function CompoundInterestCalculator() {
   const { values, errors, updateField } = useCalculatorForm()
-  const { montanteFinal, totalInvestido, totalJuros, schedule, chartData } = useCompoundInterest(values)
+  const { totalAmount, totalInvested, totalInterest, rows, chartData } = useCompoundInterest(values)
 
   return (
     <div className="w-full mx-auto space-y-8" style={{ maxWidth: '980px', padding: '0 0' }}>
@@ -51,9 +51,9 @@ export default function CompoundInterestCalculator() {
         {/* Resultados + Gráfico */}
         <div className="lg:col-span-7 space-y-6">
           <ResultPanel
-            montanteFinal={montanteFinal}
-            totalInvestido={totalInvestido}
-            totalJuros={totalJuros}
+            totalAmount={totalAmount}
+            totalInvested={totalInvested}
+            totalInterest={totalInterest}
           />
           <EvolutionChart data={chartData} />
         </div>
@@ -61,7 +61,7 @@ export default function CompoundInterestCalculator() {
 
       {/* Tabela */}
       <div className="pt-2 md:pt-4">
-        <MonthlyTable schedule={schedule} />
+        <MonthlyTable rows={rows} />
       </div>
 
       {/* Dicas */}

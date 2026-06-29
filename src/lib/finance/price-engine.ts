@@ -1,65 +1,65 @@
 import Decimal from 'decimal.js'
-import type { FinanciamentoInput, FinanciamentoOutput, Parcela } from './types'
+import type { FinancingInput, FinancingOutput, FinancingInstallment } from './types'
 
-export function calcularPRICE({
+export function calculatePRICE({
   principal,
-  taxaMensal,
-  prazoMeses,
-}: FinanciamentoInput): FinanciamentoOutput {
-  const P = new Decimal(principal)
-  const i = new Decimal(taxaMensal)
-  const n = prazoMeses
+  monthlyRate,
+  months,
+}: FinancingInput): FinancingOutput {
+  const p = new Decimal(principal)
+  const i = new Decimal(monthlyRate)
+  const n = months
 
-  // Fator: (1 + i)^n
-  const fator = i.add(1).pow(n)
+  // Factor: (1 + i)^n
+  const factor = i.add(1).pow(n)
 
   // PMT = P * [i * (1+i)^n] / [(1+i)^n - 1]
-  const pmt = P.mul(i.mul(fator)).div(fator.sub(1))
+  const pmt = p.mul(i.mul(factor)).div(factor.sub(1))
 
-  const parcelas: Parcela[] = []
-  let saldoDevedor = P
-  let totalJuros = new Decimal(0)
+  const installments: FinancingInstallment[] = []
+  let balance = p
+  let totalInterest = new Decimal(0)
 
   for (let k = 1; k <= n; k++) {
-    const juros = saldoDevedor.mul(i)
-    totalJuros = totalJuros.add(juros)
+    const interest = balance.mul(i)
+    totalInterest = totalInterest.add(interest)
 
-    const amortizacao = pmt.sub(juros)
-    saldoDevedor = saldoDevedor.sub(amortizacao)
+    const amortization = pmt.sub(interest)
+    balance = balance.sub(amortization)
 
-    if (saldoDevedor.lessThan(0)) {
-      saldoDevedor = new Decimal(0)
+    if (balance.lessThan(0)) {
+      balance = new Decimal(0)
     }
 
-    const dataVencimento = new Date()
-    dataVencimento.setMonth(dataVencimento.getMonth() + k)
-    const dataVencimentoStr = dataVencimento.toLocaleDateString('pt-BR')
+    const dueDateObj = new Date()
+    dueDateObj.setMonth(dueDateObj.getMonth() + k)
+    const dueDateStr = dueDateObj.toLocaleDateString('pt-BR')
 
-    parcelas.push({
-      numero: k,
-      dataVencimento: dataVencimentoStr,
-      saldoDevedor: saldoDevedor.toNumber(),
-      amortizacao: amortizacao.toNumber(),
-      juros: juros.toNumber(),
+    installments.push({
+      month: k,
+      dueDate: dueDateStr,
+      balance: balance.toNumber(),
+      amortization: amortization.toNumber(),
+      interest: interest.toNumber(),
       mip: 0,
       dfi: 0,
-      prestacaoTotal: pmt.toNumber(),
+      totalPayment: pmt.toNumber(),
     })
   }
 
   return {
-    parcelas,
-    totalJuros: totalJuros.toNumber(),
-    totalAmortizacao: P.toNumber(),
-    prestacaoConstante: pmt.toNumber(),
+    installments,
+    totalInterest: totalInterest.toNumber(),
+    totalAmortization: p.toNumber(),
+    constantPayment: pmt.toNumber(),
   }
 }
 
-export function obterParcelasResumidas(parcelas: Parcela[], mostrarTodas = false): Parcela[] {
-  if (mostrarTodas || parcelas.length <= 13) {
-    return parcelas
+export function getSummarizedInstallments(installments: FinancingInstallment[], showAll = false): FinancingInstallment[] {
+  if (showAll || installments.length <= 13) {
+    return installments
   }
-  const primeiras12 = parcelas.slice(0, 12)
-  const ultima = parcelas[parcelas.length - 1]
-  return [...primeiras12, ultima]
+  const first12 = installments.slice(0, 12)
+  const last = installments[installments.length - 1]
+  return [...first12, last]
 }

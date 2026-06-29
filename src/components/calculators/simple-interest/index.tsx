@@ -2,7 +2,7 @@
 
 import React, { useState, useMemo } from 'react'
 import { calculateSimpleInterest } from '@/lib/finance/simple-interest'
-import { formatarMoeda } from '@/lib/finance/utils'
+import { formatCurrency } from '@/lib/finance/utils'
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
@@ -28,9 +28,9 @@ export default function SimpleInterestCalculator() {
 
   const tableColumns = [
     { key: 'period', label: 'Período (Mês)' },
-    { key: 'periodInterest', label: 'Juros do Período', format: (v: number) => formatarMoeda(v) },
-    { key: 'accumulatedInterest', label: 'Juros Acumulados', format: (v: number) => formatarMoeda(v) },
-    { key: 'accumulated', label: 'Montante Acumulado', format: (v: number) => formatarMoeda(v) },
+    { key: 'periodInterest', label: 'Juros do Período', format: (v: number) => formatCurrency(v) },
+    { key: 'accumulatedInterest', label: 'Juros Acumulados', format: (v: number) => formatCurrency(v) },
+    { key: 'accumulated', label: 'Montante Acumulado', format: (v: number) => formatCurrency(v) },
   ]
 
   return (
@@ -119,7 +119,7 @@ export default function SimpleInterestCalculator() {
                 Valor Investido
               </p>
               <p className="text-2xl font-semibold mt-1" style={{ color: '#1d1d1f', letterSpacing: '-0.02em' }}>
-                {formatarMoeda(initialValue)}
+                {formatCurrency(initialValue)}
               </p>
             </div>
 
@@ -132,7 +132,7 @@ export default function SimpleInterestCalculator() {
                 Total em Juros
               </p>
               <p className="text-2xl font-semibold mt-1" style={{ color: '#1d1d1f', letterSpacing: '-0.02em' }}>
-                {formatarMoeda(result.totalInterest)}
+                {formatCurrency(result.totalInterest)}
               </p>
             </div>
 
@@ -145,7 +145,7 @@ export default function SimpleInterestCalculator() {
                 Montante Final
               </p>
               <p className="text-2xl font-semibold mt-1" style={{ color: '#0071e3', letterSpacing: '-0.02em' }}>
-                {formatarMoeda(result.totalAmount)}
+                {formatCurrency(result.totalAmount)}
               </p>
             </div>
           </div>

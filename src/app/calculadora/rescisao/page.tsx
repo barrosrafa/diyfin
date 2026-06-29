@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
 import { Suspense } from 'react';
-import { RescisaoCalculadora } from '@/components/calculadoras/rescisao/RescisaoCalculadora';
-import { CalculatorContent } from '@/components/calculadoras/shared/CalculatorContent';
+import SeveranceCalculator from '@/components/calculators/severance';
+import { CalculatorContent } from '@/components/calculators/shared/CalculatorContent';
 
 export const metadata: Metadata = {
   title: 'Calculadora de Rescisão Trabalhista 2026 | diyfin.com.br',
@@ -59,7 +59,7 @@ export default function RescisaoPage() {
         <p style={{ color: '#6e6e73' }}>Simulação de salário líquido e descontos fiscais para 2026.</p>
       </div>
       <Suspense fallback={<div>Carregando calculadora...</div>}>
-        <RescisaoCalculadora />
+        <SeveranceCalculator />
       </Suspense>
       <CalculatorContent content={technicalContent} />
     </div>

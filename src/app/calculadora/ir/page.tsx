@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
 import { Suspense } from 'react';
-import { IRCalculadora } from '@/components/calculadoras/ir/IRCalculadora';
-import { CalculatorContent } from '@/components/calculadoras/shared/CalculatorContent';
+import IncomeTaxCalculator from '@/components/calculators/income-tax';
+import { CalculatorContent } from '@/components/calculators/shared/CalculatorContent';
 
 export const metadata: Metadata = {
   title: 'Calculadora de Imposto de Renda 2026 | diyfin.com.br',
@@ -60,7 +60,7 @@ export default function IRPage() {
         <p style={{ color: '#6e6e73' }}>Simulador completo de IRRF mensal com as novas regras de isenção e redutores.</p>
       </div>
       <Suspense fallback={<div>Carregando calculadora...</div>}>
-        <IRCalculadora />
+        <IncomeTaxCalculator />
       </Suspense>
       <CalculatorContent content={technicalContent} />
     </div>

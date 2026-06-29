@@ -7,12 +7,12 @@ import { CalculatorFormSchema, CalculatorFormValues } from '@/lib/schemas/compou
  */
 export function useCalculatorForm() {
   const [values, setValues] = useState<CalculatorFormValues>({
-    capitalInicial: 10000,
-    aporteMensal: 500,
-    taxaInput: 1,
-    taxaBase: 'mensal',
-    periodoInput: 10,
-    periodoUnidade: 'anos',
+    initialValue: 10000,
+    monthlyContribution: 500,
+    rate: 1,
+    rateType: 'monthly',
+    period: 10,
+    periodType: 'years',
   })
 
   const [errors, setErrors] = useState<Partial<Record<keyof CalculatorFormValues, string>>>({})
@@ -23,7 +23,7 @@ export function useCalculatorForm() {
       
       // Validação em tempo real via Zod
       const result = CalculatorFormSchema.safeParse(next)
-      if (!result.success) {
+      if (!result.success && result.error) {
         const fieldError = result.error.issues.find(e => e.path[0] === field)
         setErrors(prevErrors => ({
           ...prevErrors,

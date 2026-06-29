@@ -4,7 +4,7 @@ import React, { useState } from 'react'
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Input } from '@/components/ui/input'
-import { formatarMoeda } from '@/lib/finance/utils'
+import { formatCurrency } from '@/lib/finance/utils'
 import { TrendingUp, TrendingDown, Search } from 'lucide-react'
 
 const stocks = [
@@ -148,7 +148,7 @@ export default function Investidor10Dashboard() {
                     className="text-2xl font-semibold"
                     style={{ color: '#1d1d1f', letterSpacing: '-0.02em' }}
                   >
-                    {formatarMoeda(stock.price)}
+                    {formatCurrency(stock.price)}
                   </span>
                   <span
                     className="text-sm font-semibold flex items-center gap-0.5"

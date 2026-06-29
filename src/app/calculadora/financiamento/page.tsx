@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
 import { Suspense } from 'react';
-import { FinanciamentoCalculadora } from '@/components/calculadoras/financiamento/FinanciamentoCalculadora';
-import { CalculatorContent } from '@/components/calculadoras/shared/CalculatorContent';
+import FinancingCalculator from '@/components/calculators/financing';
+import { CalculatorContent } from '@/components/calculators/shared/CalculatorContent';
 
 export const metadata: Metadata = {
   title: 'Simulador de Financiamento Imobiliário e Veículos | diyfin.com.br',
@@ -56,7 +56,7 @@ export default function FinanciamentoPage() {
         <p style={{ color: '#6e6e73' }}>Ferramenta técnica para comparação de sistemas de amortização SAC e PRICE.</p>
       </div>
       <Suspense fallback={<div>Carregando simulador...</div>}>
-        <FinanciamentoCalculadora />
+        <FinancingCalculator />
       </Suspense>
       <CalculatorContent content={technicalContent} />
     </div>

@@ -1,50 +1,50 @@
 import Decimal from 'decimal.js'
-import type { FinanciamentoInput, FinanciamentoOutput, Parcela } from './types'
+import type { FinancingInput, FinancingOutput, FinancingInstallment } from './types'
 
-export function calcularSAC({
+export function calculateSAC({
   principal,
-  taxaMensal,
-  prazoMeses,
-}: FinanciamentoInput): FinanciamentoOutput {
-  const P = new Decimal(principal)
-  const i = new Decimal(taxaMensal)
-  const n = prazoMeses
+  monthlyRate,
+  months,
+}: FinancingInput): FinancingOutput {
+  const p = new Decimal(principal)
+  const i = new Decimal(monthlyRate)
+  const n = months
 
-  const amortizacaoConstante = P.div(n)
-  const parcelas: Parcela[] = []
-  let saldoDevedor = P
-  let totalJuros = new Decimal(0)
+  const constantAmortization = p.div(n)
+  const installments: FinancingInstallment[] = []
+  let balance = p
+  let totalInterest = new Decimal(0)
 
   for (let k = 1; k <= n; k++) {
-    const juros = saldoDevedor.mul(i)
-    totalJuros = totalJuros.add(juros)
+    const interest = balance.mul(i)
+    totalInterest = totalInterest.add(interest)
 
-    const prestacaoBase = amortizacaoConstante.add(juros)
-    saldoDevedor = saldoDevedor.sub(amortizacaoConstante)
+    const basePayment = constantAmortization.add(interest)
+    balance = balance.sub(constantAmortization)
 
-    if (saldoDevedor.lessThan(0)) {
-      saldoDevedor = new Decimal(0)
+    if (balance.lessThan(0)) {
+      balance = new Decimal(0)
     }
 
-    const dataVencimento = new Date()
-    dataVencimento.setMonth(dataVencimento.getMonth() + k)
-    const dataVencimentoStr = dataVencimento.toLocaleDateString('pt-BR')
+    const dueDateObj = new Date()
+    dueDateObj.setMonth(dueDateObj.getMonth() + k)
+    const dueDateStr = dueDateObj.toLocaleDateString('pt-BR')
 
-    parcelas.push({
-      numero: k,
-      dataVencimento: dataVencimentoStr,
-      saldoDevedor: saldoDevedor.toNumber(),
-      amortizacao: amortizacaoConstante.toNumber(),
-      juros: juros.toNumber(),
+    installments.push({
+      month: k,
+      dueDate: dueDateStr,
+      balance: balance.toNumber(),
+      amortization: constantAmortization.toNumber(),
+      interest: interest.toNumber(),
       mip: 0,
       dfi: 0,
-      prestacaoTotal: prestacaoBase.toNumber(),
+      totalPayment: basePayment.toNumber(),
     })
   }
 
   return {
-    parcelas,
-    totalJuros: totalJuros.toNumber(),
-    totalAmortizacao: P.toNumber(),
+    installments,
+    totalInterest: totalInterest.toNumber(),
+    totalAmortization: p.toNumber(),
   }
 }

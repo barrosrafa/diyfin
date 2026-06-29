@@ -1,8 +1,8 @@
 'use client'
 
 import React, { useState, useMemo } from 'react'
-import { calcularSAC } from '@/lib/finance/sac-engine'
-import { formatarMoeda } from '@/lib/finance/utils'
+import { calculateSAC } from '@/lib/finance/sac-engine'
+import { formatCurrency } from '@/lib/finance/utils'
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
@@ -10,28 +10,28 @@ import { Table } from '@/components/ui/table'
 
 export default function FinancingSACCalculator() {
   const [principal, setPrincipal] = useState(200000)
-  const [taxaAnual, setTaxaAnual] = useState(9.5)
-  const [prazoAnos, setPrazoAnos] = useState(30)
+  const [annualRate, setAnnualRate] = useState(9.5)
+  const [years, setYears] = useState(30)
 
   const result = useMemo(() => {
-    const prazoMeses = (Number(prazoAnos) || 0) * 12
-    const taxaMensalDecimal = Math.pow(1 + (Number(taxaAnual) || 0) / 100, 1 / 12) - 1
-    return calcularSAC({
+    const months = (Number(years) || 0) * 12
+    const monthlyRateDecimal = Math.pow(1 + (Number(annualRate) || 0) / 100, 1 / 12) - 1
+    return calculateSAC({
       principal: Number(principal) || 0,
-      taxaMensal: taxaMensalDecimal,
-      prazoMeses,
+      monthlyRate: monthlyRateDecimal,
+      months,
     })
-  }, [principal, taxaAnual, prazoAnos])
+  }, [principal, annualRate, years])
 
-  const primeiraParcela = result.parcelas[0]?.prestacaoTotal || 0
-  const ultimaParcela = result.parcelas[result.parcelas.length - 1]?.prestacaoTotal || 0
+  const firstInstallment = result.installments[0]?.totalPayment || 0
+  const lastInstallment = result.installments[result.installments.length - 1]?.totalPayment || 0
 
   const tableColumns = [
-    { key: 'numero', label: 'Parcela' },
-    { key: 'prestacaoTotal', label: 'Prestação', format: (v: number) => formatarMoeda(v) },
-    { key: 'amortizacao', label: 'Amortização', format: (v: number) => formatarMoeda(v) },
-    { key: 'juros', label: 'Juros', format: (v: number) => formatarMoeda(v) },
-    { key: 'saldoDevedor', label: 'Saldo Devedor', format: (v: number) => formatarMoeda(v) },
+    { key: 'month', label: 'Parcela' },
+    { key: 'totalPayment', label: 'Prestação', format: (v: number) => formatCurrency(v) },
+    { key: 'amortization', label: 'Amortização', format: (v: number) => formatCurrency(v) },
+    { key: 'interest', label: 'Juros', format: (v: number) => formatCurrency(v) },
+    { key: 'balance', label: 'Saldo Devedor', format: (v: number) => formatCurrency(v) },
   ]
 
   return (
@@ -63,19 +63,19 @@ export default function FinancingSACCalculator() {
               </div>
               <div>
                 <Label>Taxa de Juros Anual (%)</Label>
-                <Input
+                  <Input
                   type="number"
                   step="0.1"
-                  value={taxaAnual}
-                  onChange={(e) => setTaxaAnual(Number(e.target.value))}
+                  value={annualRate}
+                  onChange={(e) => setAnnualRate(Number(e.target.value))}
                 />
               </div>
               <div>
                 <Label>Prazo do Financiamento (Anos)</Label>
                 <Input
                   type="number"
-                  value={prazoAnos}
-                  onChange={(e) => setPrazoAnos(Number(e.target.value))}
+                  value={years}
+                  onChange={(e) => setYears(Number(e.target.value))}
                 />
               </div>
             </CardContent>
@@ -94,7 +94,7 @@ export default function FinancingSACCalculator() {
                 Primeira Parcela
               </p>
               <p className="text-2xl font-semibold mt-1" style={{ color: '#1d1d1f', letterSpacing: '-0.02em' }}>
-                {formatarMoeda(primeiraParcela)}
+                {formatCurrency(firstInstallment)}
               </p>
             </div>
 
@@ -107,7 +107,7 @@ export default function FinancingSACCalculator() {
                 Última Parcela
               </p>
               <p className="text-2xl font-semibold mt-1" style={{ color: '#1d1d1f', letterSpacing: '-0.02em' }}>
-                {formatarMoeda(ultimaParcela)}
+                {formatCurrency(lastInstallment)}
               </p>
             </div>
 
@@ -120,7 +120,7 @@ export default function FinancingSACCalculator() {
                 Total de Juros
               </p>
               <p className="text-2xl font-semibold mt-1" style={{ color: '#1d1d1f', letterSpacing: '-0.02em' }}>
-                {formatarMoeda(result.totalJuros)}
+                {formatCurrency(result.totalInterest)}
               </p>
             </div>
           </div>
@@ -132,7 +132,7 @@ export default function FinancingSACCalculator() {
             <CardContent>
               <Table
                 columns={tableColumns}
-                data={result.parcelas.filter((_, i) => i === 0 || i % 12 === 0 || i === result.parcelas.length - 1)}
+                data={result.installments.filter((_, i) => i === 0 || i % 12 === 0 || i === result.installments.length - 1)}
               />
             </CardContent>
           </Card>
