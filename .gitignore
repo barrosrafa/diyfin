@@ -8,3 +8,4 @@ coverage/
 !.env.example
 .next/out/
 .next/
+# .next foi commitado por engano anteriormente — nunca deve ser versionado
