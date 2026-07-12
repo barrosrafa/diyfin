@@ -1,11 +1,10 @@
 'use client'
 
 import React from 'react'
-import { IMaskInput } from 'react-imask'
 import { Label } from '@/components/ui/label'
 import { Input } from '@/components/ui/input'
 import { CalculatorFormValues } from '@/lib/schemas/compound-interest.schema'
-import { CURRENCY_MASK, PERCENT_MASK } from '@/lib/masks'
+import { DiyFormCard, DiyCurrencyInput, DiyPercentInput, DiyToggleGroup, diyTokens } from '@/components/diy'
 
 interface CalculatorFormProps {
   values: CalculatorFormValues
@@ -13,186 +12,77 @@ interface CalculatorFormProps {
   onChange: (field: keyof CalculatorFormValues, value: any) => void
 }
 
-const appleInputClass = `flex w-full text-sm placeholder:text-[#86868b] focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-50`
-const appleInputStyle: React.CSSProperties = {
-  height: '42px',
-  padding: '0 14px',
-  background: '#ffffff',
-  border: '1px solid #d2d2d7',
-  borderRadius: '10px',
-  color: '#1d1d1f',
-  fontSize: '0.95rem',
-  transition: 'border-color 0.15s ease, box-shadow 0.15s ease',
-}
-
-function ToggleGroup({
-  options,
-  value,
-  onChange,
-}: {
-  options: { label: string; value: string }[]
-  value: string
-  onChange: (v: string) => void
-}) {
-  return (
-    <div
-      className="flex items-center gap-1 p-1"
-      style={{ background: '#f5f5f7', borderRadius: '10px' }}
-    >
-      {options.map((opt) => (
-        <button
-          key={opt.value}
-          type="button"
-          onClick={() => onChange(opt.value)}
-          className="px-3 py-1.5 text-xs font-medium transition-all"
-          style={{
-            borderRadius: '8px',
-            background: value === opt.value ? '#ffffff' : 'transparent',
-            color: value === opt.value ? '#0071e3' : '#6e6e73',
-            boxShadow: value === opt.value ? '0 1px 4px rgba(0,0,0,0.08)' : 'none',
-            fontWeight: value === opt.value ? 600 : 400,
-            cursor: 'pointer',
-            border: 'none',
-          }}
-          aria-pressed={value === opt.value}
-        >
-          {opt.label}
-        </button>
-      ))}
-    </div>
-  )
-}
-
 export function CalculatorForm({ values, errors, onChange }: CalculatorFormProps) {
-  const handleFocus = (e: React.FocusEvent<HTMLInputElement>) => {
-    e.currentTarget.style.borderColor = '#0071e3'
-    e.currentTarget.style.boxShadow = '0 0 0 3px rgba(0,113,227,0.15)'
-  }
-  const handleBlur = (e: React.FocusEvent<HTMLInputElement>) => {
-    e.currentTarget.style.borderColor = errors ? '#ff3b30' : '#d2d2d7'
-    e.currentTarget.style.boxShadow = 'none'
-  }
-
   return (
-    <div
-      className="w-full rounded-2xl overflow-hidden"
-      style={{ border: '1px solid #d2d2d7', background: '#ffffff' }}
+    <DiyFormCard
+      title="Parâmetros da Simulação"
+      description="Configure os valores para calcular o crescimento do seu patrimônio"
+      tip="Experimente diferentes cenários para encontrar a melhor estratégia."
     >
-      {/* Header */}
-      <div
-        className="px-6 py-4"
-        style={{ borderBottom: '1px solid #e5e5ea', background: '#f5f5f7' }}
-      >
-        <h3 className="text-base font-semibold" style={{ color: '#1d1d1f' }}>
-          Parâmetros da Simulação
-        </h3>
-        <p className="text-xs mt-0.5" style={{ color: '#6e6e73' }}>
-          Configure os valores para calcular o crescimento do seu patrimônio
-        </p>
-      </div>
-
-      <div className="p-6 space-y-6">
-        {/* Valor Inicial + Aporte */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-          {[
-            { id: 'initialValue', label: 'Valor Inicial', suffix: '(R$)', mask: CURRENCY_MASK, field: 'initialValue' as const },
-            { id: 'monthlyContribution', label: 'Aporte Mensal', suffix: '(R$)', mask: CURRENCY_MASK, field: 'monthlyContribution' as const },
-          ].map(({ id, label, suffix, mask, field }) => (
-            <div key={id} className="space-y-2">
-              <Label htmlFor={id}>
-                {label}{' '}
-                <span style={{ color: '#86868b', fontWeight: 400 }}>{suffix}</span>
-              </Label>
-              <IMaskInput
-                id={id}
-                {...mask}
-                value={values[field].toString()}
-                unmask={true}
-                onAccept={(value) => onChange(field, Number(value))}
-                placeholder="R$ 0,00"
-                className={appleInputClass}
-                style={{
-                  ...appleInputStyle,
-                  borderColor: errors[field] ? '#ff3b30' : '#d2d2d7',
-                }}
-                onFocus={handleFocus}
-                onBlur={handleBlur}
-              />
-              {errors[field] && (
-                <p className="text-xs font-medium" style={{ color: '#ff3b30' }}>
-                  {errors[field]}
-                </p>
-              )}
-            </div>
-          ))}
-        </div>
-
-        {/* Taxa de Juros */}
-        <div className="space-y-2">
-          <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-3">
-            <Label htmlFor="rate">
-              Taxa de Juros{' '}
-              <span style={{ color: '#86868b', fontWeight: 400 }}>(%)</span>
+      {/* Valor Inicial + Aporte */}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+        {[
+          { id: 'initialValue', label: 'Valor Inicial', field: 'initialValue' as const },
+          { id: 'monthlyContribution', label: 'Aporte Mensal', field: 'monthlyContribution' as const },
+        ].map(({ id, label, field }) => (
+          <div key={id} className="space-y-2">
+            <Label htmlFor={id}>
+              {label}{' '}
+              <span style={{ color: diyTokens.color.placeholder, fontWeight: 400 }}>(R$)</span>
             </Label>
-            <ToggleGroup
-              options={[{ label: 'Mensal', value: 'monthly' }, { label: 'Anual', value: 'annual' }]}
-              value={values.rateType}
-              onChange={(v) => onChange('rateType', v)}
+            <DiyCurrencyInput
+              id={id}
+              value={values[field]}
+              onValueChange={(v) => onChange(field, v)}
+              error={errors[field]}
             />
           </div>
-          <IMaskInput
-            id="rate"
-            {...PERCENT_MASK}
-            value={values.rate.toString()}
-            unmask={true}
-            onAccept={(value) => onChange('rate', Number(value))}
-            placeholder="0,00"
-            className={appleInputClass}
-            style={{
-              ...appleInputStyle,
-              borderColor: errors.rate ? '#ff3b30' : '#d2d2d7',
-            }}
-            onFocus={handleFocus}
-            onBlur={handleBlur}
-          />
-          {errors.rate && (
-            <p className="text-xs font-medium" style={{ color: '#ff3b30' }}>{errors.rate}</p>
-          )}
-        </div>
-
-        {/* Período */}
-        <div className="space-y-2">
-          <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-3">
-            <Label htmlFor="period">Período</Label>
-            <ToggleGroup
-              options={[{ label: 'Meses', value: 'months' }, { label: 'Anos', value: 'years' }]}
-              value={values.periodType}
-              onChange={(v) => onChange('periodType', v)}
-            />
-          </div>
-          <Input
-            id="period"
-            type="number"
-            value={values.period}
-            onChange={(e) => onChange('period', Number(e.target.value))}
-            placeholder="0"
-            style={errors.period ? { borderColor: '#ff3b30' } : {}}
-          />
-          {errors.period && (
-            <p className="text-xs font-medium" style={{ color: '#ff3b30' }}>{errors.period}</p>
-          )}
-        </div>
+        ))}
       </div>
 
-      {/* Footer dica */}
-      <div
-        className="px-6 py-3"
-        style={{ borderTop: '1px solid #e5e5ea', background: '#f5f5f7' }}
-      >
-        <p className="text-xs" style={{ color: '#6e6e73' }}>
-          <span style={{ color: '#1d1d1f', fontWeight: 600 }}>Dica:</span> Experimente diferentes cenários para encontrar a melhor estratégia.
-        </p>
+      {/* Taxa de Juros */}
+      <div className="space-y-2">
+        <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-3">
+          <Label htmlFor="rate">
+            Taxa de Juros{' '}
+            <span style={{ color: diyTokens.color.placeholder, fontWeight: 400 }}>(%)</span>
+          </Label>
+          <DiyToggleGroup
+            options={[{ label: 'Mensal', value: 'monthly' }, { label: 'Anual', value: 'annual' }]}
+            value={values.rateType}
+            onChange={(v) => onChange('rateType', v)}
+          />
+        </div>
+        <DiyPercentInput
+          id="rate"
+          value={values.rate}
+          onValueChange={(v) => onChange('rate', v)}
+          error={errors.rate}
+        />
       </div>
-    </div>
+
+      {/* Período */}
+      <div className="space-y-2">
+        <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-3">
+          <Label htmlFor="period">Período</Label>
+          <DiyToggleGroup
+            options={[{ label: 'Meses', value: 'months' }, { label: 'Anos', value: 'years' }]}
+            value={values.periodType}
+            onChange={(v) => onChange('periodType', v)}
+          />
+        </div>
+        <Input
+          id="period"
+          type="number"
+          value={values.period}
+          onChange={(e) => onChange('period', Number(e.target.value))}
+          placeholder="0"
+          style={errors.period ? { borderColor: diyTokens.color.danger } : {}}
+        />
+        {errors.period && (
+          <p className="text-xs font-medium" style={{ color: diyTokens.color.danger }}>{errors.period}</p>
+        )}
+      </div>
+    </DiyFormCard>
   )
 }
